@@ -1,23 +1,31 @@
 import {Component, ViewChild, ElementRef} from 'angular2/core';
+import {InputFileDirective} from "./input-file.directive";
 
 export const _name = 'ImportData';
 
 @Component({
-  selector: 'rw-import-data',
-  template: `
+  selector  : 'rw-import-data',
+  directives: [InputFileDirective],
+  template  : `
     <input
+      input-file
       type="file"
-      (change)="onChange($event)"
+      (result)="onResultInputFile($event)"
     >
-    <button (click)="onClick()">Import</button>
+    <button
+      (click)="onClick()"
+      [attr.disabled]="disableImport ? true : null"
+     >Import</button>
   `
 })
 export class ImportDataComponent {
   
   importedCsv: string;
+  disableImport: boolean;
 
   constructor() {
-    this.clearImportedCsv();
+    this.importedCsv   = null;
+    this.disableImport = true;
   }
 
   /**
@@ -32,35 +40,12 @@ export class ImportDataComponent {
   }
 
   /**
-   * @param ev
+   * @param result
    */
-  onChange(ev: Event): void {
-    const file = (<HTMLInputElement>ev.target).files[0];
-    if (!file) {
-      this.clearImportedCsv();
-      return;
-    }
-
-    const fileReader  = new FileReader();
-    const filePromise = new Promise<string>((resolve) => {
-      fileReader.onload = (fileEvent: ProgressEvent) => {
-        const result: string = (<any>fileEvent.target).result;
-        resolve(result);
-      };
-    });
-
-    fileReader.readAsText(file);
-
-    filePromise.then((fileText: string) => {
-      this.importedCsv = fileText;
-    });
-  }
-
-  /**
-   * @return void
-   */
-  private clearImportedCsv(): void {
-    this.importedCsv = null;
+  onResultInputFile(result: string) {
+    // If it has a no result, button will be disabled.
+    this.disableImport = !result;
+    this.importedCsv   = result;
   }
 
 }
