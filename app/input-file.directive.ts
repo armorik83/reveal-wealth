@@ -1,7 +1,7 @@
 import {Directive, Output, EventEmitter, HostListener} from 'angular2/core';
 
 @Directive({
-  selector: '[input-file]'
+  selector: 'input[type=file]'
 })
 export class InputFileDirective {
 

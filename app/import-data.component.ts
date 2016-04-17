@@ -8,7 +8,6 @@ export const _name = 'ImportData';
   directives: [InputFileDirective],
   template  : `
     <input
-      input-file
       type="file"
       (result)="onResultInputFile($event)"
     >
