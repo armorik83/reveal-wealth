@@ -6,7 +6,7 @@ import {Directive, Output, EventEmitter, HostListener} from 'angular2/core';
 export class InputFileDirective {
 
   @Output() result = new EventEmitter();
-  
+
   /**
    * @param ev
    */

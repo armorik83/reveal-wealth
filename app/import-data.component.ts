@@ -1,7 +1,7 @@
-import {Component, ViewChild, ElementRef} from 'angular2/core';
-import {InputFileDirective} from "./input-file.directive";
+import {Component, ViewChild, ElementRef, Input} from 'angular2/core';
 
-export const _name = 'ImportData';
+import {AbstractRooterRootComponent} from './abstract-router-root.component';
+import {InputFileDirective} from './input-file.directive';
 
 @Component({
   selector  : 'rw-import-data',
@@ -11,18 +11,24 @@ export const _name = 'ImportData';
       type="file"
       (result)="onResultInputFile($event)"
     >
+
     <button
       (click)="onClick()"
       [attr.disabled]="disableImport ? true : null"
-     >Import</button>
+    >
+      Import
+    </button>
   `
 })
-export class ImportDataComponent {
-  
+export class ImportDataComponent extends AbstractRooterRootComponent {
+
+  static routeName = 'ImportDataComponent';
+
   importedCsv: string;
   disableImport: boolean;
 
   constructor() {
+    super();
     this.importedCsv   = null;
     this.disableImport = true;
   }
@@ -42,9 +48,10 @@ export class ImportDataComponent {
    * @param result
    */
   onResultInputFile(result: string) {
+    this.importedCsv = result;
+
     // If it has a no result, button will be disabled.
     this.disableImport = !result;
-    this.importedCsv   = result;
   }
 
 }

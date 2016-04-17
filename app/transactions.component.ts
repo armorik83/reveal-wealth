@@ -1,10 +1,17 @@
 import {Component} from 'angular2/core';
 
-export const _name = 'Transactions';
+import {AbstractRooterRootComponent} from './abstract-router-root.component';
 
 @Component({
   selector: 'rw-transactions',
   template: `TransactionsComponent`
 })
-export class TransactionsComponent {
+export class TransactionsComponent extends AbstractRooterRootComponent {
+
+  static routeName = 'TransactionsComponent';
+
+  constructor() {
+    super();
+  }
+
 }
