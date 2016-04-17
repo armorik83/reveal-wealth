@@ -9,7 +9,15 @@ import {
   AfterViewChecked
 } from 'angular2/core';
 
-export class AbstractComponent implements OnInit, OnChanges, DoCheck, OnDestroy, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked {
+export class AbstractComponent implements
+  OnInit,
+  OnChanges,
+  DoCheck,
+  OnDestroy,
+  AfterContentInit,
+  AfterContentChecked,
+  AfterViewInit,
+  AfterViewChecked {
 
   constructor() {
     // noop

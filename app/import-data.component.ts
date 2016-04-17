@@ -1,4 +1,4 @@
-import {Component, ViewChild, ElementRef, Input} from 'angular2/core';
+import {Component} from 'angular2/core';
 
 import {AbstractRooterRootComponent} from './abstract-router-root.component';
 import {InputFileDirective} from './input-file.directive';
@@ -47,7 +47,7 @@ export class ImportDataComponent extends AbstractRooterRootComponent {
   /**
    * @param result
    */
-  onResultInputFile(result: string) {
+  onResultInputFile(result: string): void {
     this.importedCsv = result;
 
     // If it has a no result, button will be disabled.
