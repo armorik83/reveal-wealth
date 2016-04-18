@@ -1,14 +1,20 @@
 import {Component} from 'angular2/core';
 import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from 'angular2/router';
 
+import {Store} from './store';
 import {AbstractComponent} from './abstract.component';
 import {TransactionsComponent} from './transactions.component';
 import {ImportDataComponent} from './import-data.component';
+import {Increment} from './actions/increment';
 
 @Component({
   selector  : 'rw-app',
   directives: [ROUTER_DIRECTIVES],
-  providers : [ROUTER_PROVIDERS],
+  providers : [
+    ROUTER_PROVIDERS,
+    Store,
+    Increment
+  ],
   template  : `
     <nav>
       <a [routerLink]="['${TransactionsComponent.routeName}']">Transactions</a>
@@ -23,7 +29,7 @@ import {ImportDataComponent} from './import-data.component';
 ])
 export class AppComponent extends AbstractComponent {
 
-  constructor() {
+  constructor(private Store: Store) {
     super();
   }
 
