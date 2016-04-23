@@ -1,0 +1,8 @@
+{
+  "name": "reveal-wealth",
+  "version": false,
+  "dependencies": {},
+  "ambientDevDependencies": {
+    "papaparse": "registry:dt/papaparse#4.1.0+20160317120654"
+  }
+}

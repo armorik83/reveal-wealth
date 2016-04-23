@@ -1,5 +1,6 @@
 node_modules
 .tmp
 npm-debug.log
-build
+built
 tsconfig.json
+typings/

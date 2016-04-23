@@ -7,11 +7,21 @@ import {ImportDataComponent} from './import-data.component';
 import {NavComponent} from './nav.component';
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore} from './app.store';
+import {RouteChanger} from './route-changer.service';
+import {ToTransactionsAction} from './to-transactions.action';
+import {ToImportDataAction} from './to-import-data.action';
 
 @Component({
   selector  : 'rw-app',
   directives: [ROUTER_DIRECTIVES, NavComponent],
-  providers : [ROUTER_PROVIDERS, AppDispatcher, AppStore],
+  providers : [
+    ROUTER_PROVIDERS,
+    AppDispatcher,
+    AppStore,
+    RouteChanger,
+    ToTransactionsAction,
+    ToImportDataAction
+  ],
   template  : `
     <rw-nav></rw-nav>
     <router-outlet></router-outlet> 

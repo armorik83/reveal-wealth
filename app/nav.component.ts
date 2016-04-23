@@ -5,7 +5,6 @@ import {RouteChanger} from './route-changer.service';
 
 @Component({
   selector : 'rw-nav',
-  providers: [RouteChanger],
   template : `
     <nav>
       <button (click)="onClickTransactions()">Transactions</button>

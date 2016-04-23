@@ -9,7 +9,12 @@ import {AbstractRouterComponent} from './abstract-router.component';
 
 @Component({
   selector : 'rw-transactions',
-  providers: [AppDispatcher, AppStore],
+  providers: [
+    AppDispatcher,
+    AppStore,
+    SetCurrentRouteStateAction,
+    IncrementAction
+  ],
   template : `
     <button (click)="onClick()">increment</button>
   `
@@ -20,8 +25,10 @@ export class TransactionsComponent extends AbstractRouterComponent {
   static routeName: 'TransactionsComponent' = 'TransactionsComponent';
 
   constructor(protected AppStore: AppStore,
-              private AppDispatcher: AppDispatcher) {
-    super(AppStore);
+              protected SetCurrentRouteStateAction: SetCurrentRouteStateAction,
+              private AppDispatcher: AppDispatcher,
+              private IncrementAction: IncrementAction) {
+    super(AppStore, SetCurrentRouteStateAction);
   }
 
   /**
@@ -35,7 +42,7 @@ export class TransactionsComponent extends AbstractRouterComponent {
     });
     this.disposers.push(disposer);
 
-    this.AppDispatcher.emit(new SetCurrentRouteStateAction(
+    this.AppDispatcher.emit(this.SetCurrentRouteStateAction.create(
       TransactionsComponent.routeName)
     );
   }
@@ -44,7 +51,7 @@ export class TransactionsComponent extends AbstractRouterComponent {
    * @return void
    */
   onClick(): void {
-    this.AppDispatcher.emit(new IncrementAction(3));
+    this.AppDispatcher.emit(this.IncrementAction.create(3));
   }
 
 }

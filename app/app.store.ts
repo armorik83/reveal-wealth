@@ -11,11 +11,13 @@ export type RouteState =
 export class AppState extends State {
   routeState: RouteState;
   num: number;
+  json: any[];
 }
 
 const INIT_STATE: AppState = {
   routeState: 'n/a',
-  num       : 0
+  num       : 0,
+  json      : []
 };
 
 @Injectable()

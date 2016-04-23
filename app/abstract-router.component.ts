@@ -1,9 +1,11 @@
-import {AbstractComponent} from './abstract.component';
+import {SetCurrentRouteStateAction} from './set-current-route-state.action';
 import {AppStore} from './app.store';
+import {AbstractComponent} from './abstract.component';
 
 export class AbstractRouterComponent extends AbstractComponent {
 
-  constructor(protected AppStore: AppStore) {
+  constructor(protected AppStore: AppStore,
+              protected SetCurrentRouteStateAction: SetCurrentRouteStateAction) {
     super();
   }
 
