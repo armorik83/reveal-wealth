@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
 
-import {AbstractRooterRootComponent} from './abstract-router-root.component';
+import {AbstractRouterComponent} from './abstract-router.component';
 import {InputFileDirective} from './input-file.directive';
 
 @Component({
@@ -20,7 +20,7 @@ import {InputFileDirective} from './input-file.directive';
     </button>
   `
 })
-export class ImportDataComponent extends AbstractRooterRootComponent {
+export class ImportDataComponent extends AbstractRouterComponent {
 
   static routeName = 'ImportDataComponent';
 

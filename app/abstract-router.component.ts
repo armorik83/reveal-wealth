@@ -1,6 +1,6 @@
 import {AbstractComponent} from './abstract.component';
 
-export class AbstractRooterRootComponent extends AbstractComponent {
+export class AbstractRouterComponent extends AbstractComponent {
 
   constructor() {
     super();

@@ -1,28 +1,30 @@
 import {Component} from 'angular2/core';
 
-import {AbstractRooterRootComponent} from './abstract-router-root.component';
-import {Store, State} from './store';
-import {Increment} from './actions/increment';
+import {IncrementAction} from './increment.action';
+import {AppDispatcher} from './app.dispatcher';
+import {AppStore, AppState} from './app.store';
+
+import {AbstractRouterComponent} from './abstract-router.component';
 
 @Component({
   selector : 'rw-transactions',
   template : `<button (click)="onClick()">increment</button>`
 })
-export class TransactionsComponent extends AbstractRooterRootComponent {
+export class TransactionsComponent extends AbstractRouterComponent {
 
   static routeName = 'TransactionsComponent';
 
-  constructor(private Store: Store,
-              private Increment: Increment) {
+  constructor(private AppDispatcher: AppDispatcher,
+              private AppStore: AppStore) {
     super();
 
-    this.Store.addListenerOnComplete((state: State) => {
-      console.log(state);
+    this.AppStore.onComplete((st: AppState) => {
+      console.log(st);
     });
   }
 
   onClick(): void {
-    this.Increment.run(3);
+    this.AppDispatcher.emit(new IncrementAction(3));
   }
 
 }

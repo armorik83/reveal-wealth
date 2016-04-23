@@ -1,19 +1,19 @@
 import {Component} from 'angular2/core';
 import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from 'angular2/router';
 
-import {Store} from './store';
+import {AppDispatcher} from './app.dispatcher';
+import {AppStore} from './app.store';
 import {AbstractComponent} from './abstract.component';
 import {TransactionsComponent} from './transactions.component';
 import {ImportDataComponent} from './import-data.component';
-import {Increment} from './actions/increment';
 
 @Component({
   selector  : 'rw-app',
   directives: [ROUTER_DIRECTIVES],
   providers : [
     ROUTER_PROVIDERS,
-    Store,
-    Increment
+    AppDispatcher,
+    AppStore
   ],
   template  : `
     <nav>
@@ -29,7 +29,7 @@ import {Increment} from './actions/increment';
 ])
 export class AppComponent extends AbstractComponent {
 
-  constructor(private Store: Store) {
+  constructor() {
     super();
   }
 
