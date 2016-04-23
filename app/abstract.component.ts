@@ -19,6 +19,8 @@ export class AbstractComponent implements
   AfterViewInit,
   AfterViewChecked {
 
+  protected disposers: Function[] = [];
+
   constructor() {
     // noop
   }
@@ -36,7 +38,7 @@ export class AbstractComponent implements
   }
 
   ngOnDestroy(): void {
-    // noop
+    this.disposers.forEach((disposer) => disposer());
   }
 
   ngAfterContentInit(): void {

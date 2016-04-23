@@ -10,7 +10,7 @@ export class IncrementAction extends Action<AppState> {
   constructor(n: number) {
     super((st: AppState) => {
       st.num = fn(st, n);
-      return st;
+      return Promise.resolve(st);
     });
   }
 

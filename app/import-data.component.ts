@@ -1,12 +1,15 @@
 import {Component} from 'angular2/core';
 
 import {AbstractRouterComponent} from './abstract-router.component';
-import {AppStore} from './app.store';
+import {AppDispatcher} from './app.dispatcher';
+import {AppStore, AppState} from './app.store';
 import {InputFileDirective} from './input-file.directive';
+import {RouteChanger} from './route-changer.service';
 
 @Component({
   selector  : 'rw-import-data',
   directives: [InputFileDirective],
+  providers : [AppDispatcher, AppStore, RouteChanger],
   template  : `
     <input
       type="file"
@@ -14,7 +17,7 @@ import {InputFileDirective} from './input-file.directive';
     >
 
     <button
-      (click)="onClick()"
+      (click)="onClickImport()"
       [attr.disabled]="disableImport ? true : null"
     >
       Import
@@ -23,12 +26,14 @@ import {InputFileDirective} from './input-file.directive';
 })
 export class ImportDataComponent extends AbstractRouterComponent {
 
-  static routeName = 'ImportDataComponent';
+  /* it has the string literal type */
+  static routeName: 'ImportDataComponent' = 'ImportDataComponent';
 
   importedCsv: string;
   disableImport: boolean;
 
-  constructor(protected AppStore: AppStore) {
+  constructor(protected AppStore: AppStore,
+              private RouteChanger: RouteChanger) {
     super(AppStore);
     this.importedCsv   = null;
     this.disableImport = true;
@@ -37,12 +42,23 @@ export class ImportDataComponent extends AbstractRouterComponent {
   /**
    * @return void
    */
-  onClick(): void {
+  ngOnInit(): void {
+    super.ngOnInit();
+
+    this.AppStore.onComplete((st: AppState) => {
+      console.log(st);
+    });
+  }
+
+  /**
+   * @return void
+   */
+  onClickImport(): void {
     if (!this.importedCsv) {
       return;
     }
 
-    console.log(this.importedCsv);
+    this.RouteChanger.toTransactions();
   }
 
   /**

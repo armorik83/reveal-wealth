@@ -8,21 +8,34 @@ import {AbstractRouterComponent} from './abstract-router.component';
 
 @Component({
   selector : 'rw-transactions',
+  providers: [AppDispatcher, AppStore],
   template : `<button (click)="onClick()">increment</button>`
 })
 export class TransactionsComponent extends AbstractRouterComponent {
 
-  static routeName = 'TransactionsComponent';
+  /* it has the string literal type */
+  static routeName: 'TransactionsComponent' = 'TransactionsComponent';
 
   constructor(protected AppStore: AppStore,
               private AppDispatcher: AppDispatcher) {
     super(AppStore);
-
-    this.AppStore.onComplete((st: AppState) => {
-      console.log(st);
-    });
   }
 
+  /**
+   * @return void
+   */
+  ngOnInit(): void {
+    super.ngOnInit();
+
+    const disposer = this.AppStore.onComplete((st: AppState) => {
+      console.log(st);
+    });
+    this.disposers.push(disposer);
+  }
+
+  /**
+   * @return void
+   */
   onClick(): void {
     this.AppDispatcher.emit(new IncrementAction(3));
   }

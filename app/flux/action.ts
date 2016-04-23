@@ -1,6 +1,6 @@
 import {State} from './store';
 
-export type Reducer<ST extends State> = (state: ST) => ST;
+export type Reducer<ST extends State> = (state: ST) => Promise<ST>;
 
 export class Action<ST extends State> {
 

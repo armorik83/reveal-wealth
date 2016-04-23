@@ -1,8 +1,6 @@
 import {Component} from 'angular2/core';
 import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from 'angular2/router';
 
-import {AppDispatcher} from './app.dispatcher';
-import {AppStore} from './app.store';
 import {AbstractComponent} from './abstract.component';
 import {TransactionsComponent} from './transactions.component';
 import {ImportDataComponent} from './import-data.component';
@@ -10,11 +8,7 @@ import {ImportDataComponent} from './import-data.component';
 @Component({
   selector  : 'rw-app',
   directives: [ROUTER_DIRECTIVES],
-  providers : [
-    ROUTER_PROVIDERS,
-    AppDispatcher,
-    AppStore
-  ],
+  providers : [ROUTER_PROVIDERS],
   template  : `
     <nav>
       <a [routerLink]="['${TransactionsComponent.routeName}']">Transactions</a>
