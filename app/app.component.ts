@@ -4,16 +4,16 @@ import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from 'angular2/router'
 import {AbstractComponent} from './abstract.component';
 import {TransactionsComponent} from './transactions.component';
 import {ImportDataComponent} from './import-data.component';
+import {NavComponent} from './nav.component';
+import {AppDispatcher} from './app.dispatcher';
+import {AppStore} from './app.store';
 
 @Component({
   selector  : 'rw-app',
-  directives: [ROUTER_DIRECTIVES],
-  providers : [ROUTER_PROVIDERS],
+  directives: [ROUTER_DIRECTIVES, NavComponent],
+  providers : [ROUTER_PROVIDERS, AppDispatcher, AppStore],
   template  : `
-    <nav>
-      <a [routerLink]="['${TransactionsComponent.routeName}']">Transactions</a>
-      <a [routerLink]="['${ImportDataComponent.routeName}']">ImportData</a>
-    </nav>
+    <rw-nav></rw-nav>
     <router-outlet></router-outlet> 
   `
 })
@@ -23,7 +23,8 @@ import {ImportDataComponent} from './import-data.component';
 ])
 export class AppComponent extends AbstractComponent {
 
-  constructor() {
+  constructor(private AppDispatcher: AppDispatcher,
+              private AppStore: AppStore) {
     super();
   }
 

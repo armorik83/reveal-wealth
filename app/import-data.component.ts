@@ -1,10 +1,12 @@
 import {Component} from 'angular2/core';
 
-import {AbstractRouterComponent} from './abstract-router.component';
+import {SetCurrentRouteStateAction} from './set-current-route-state.action';
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
-import {InputFileDirective} from './input-file.directive';
 import {RouteChanger} from './route-changer.service';
+
+import {AbstractRouterComponent} from './abstract-router.component';
+import {InputFileDirective} from './input-file.directive';
 
 @Component({
   selector  : 'rw-import-data',
@@ -33,6 +35,7 @@ export class ImportDataComponent extends AbstractRouterComponent {
   disableImport: boolean;
 
   constructor(protected AppStore: AppStore,
+              private AppDispatcher: AppDispatcher,
               private RouteChanger: RouteChanger) {
     super(AppStore);
     this.importedCsv   = null;
@@ -48,6 +51,10 @@ export class ImportDataComponent extends AbstractRouterComponent {
     this.AppStore.onComplete((st: AppState) => {
       console.log(st);
     });
+
+    this.AppDispatcher.emit(new SetCurrentRouteStateAction(
+      ImportDataComponent.routeName)
+    );
   }
 
   /**
