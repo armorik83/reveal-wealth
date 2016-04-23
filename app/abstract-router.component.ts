@@ -1,8 +1,9 @@
 import {AbstractComponent} from './abstract.component';
+import {AppStore} from './app.store';
 
 export class AbstractRouterComponent extends AbstractComponent {
 
-  constructor() {
+  constructor(protected AppStore: AppStore) {
     super();
   }
 

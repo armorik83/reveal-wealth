@@ -14,9 +14,9 @@ export class TransactionsComponent extends AbstractRouterComponent {
 
   static routeName = 'TransactionsComponent';
 
-  constructor(private AppDispatcher: AppDispatcher,
-              private AppStore: AppStore) {
-    super();
+  constructor(protected AppStore: AppStore,
+              private AppDispatcher: AppDispatcher) {
+    super(AppStore);
 
     this.AppStore.onComplete((st: AppState) => {
       console.log(st);

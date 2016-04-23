@@ -1,6 +1,7 @@
 import {Component} from 'angular2/core';
 
 import {AbstractRouterComponent} from './abstract-router.component';
+import {AppStore} from './app.store';
 import {InputFileDirective} from './input-file.directive';
 
 @Component({
@@ -27,8 +28,8 @@ export class ImportDataComponent extends AbstractRouterComponent {
   importedCsv: string;
   disableImport: boolean;
 
-  constructor() {
-    super();
+  constructor(protected AppStore: AppStore) {
+    super(AppStore);
     this.importedCsv   = null;
     this.disableImport = true;
   }
