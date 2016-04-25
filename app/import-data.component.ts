@@ -8,6 +8,7 @@ import {RouteChanger} from './route-changer.service';
 
 import {AbstractRouterComponent} from './abstract-router.component';
 import {InputFileDirective} from './input-file.directive';
+import {TransactionRepository} from './transaction-repository.service';
 
 @Component({
   selector  : 'rw-import-data',
@@ -16,7 +17,8 @@ import {InputFileDirective} from './input-file.directive';
     AppDispatcher,
     AppStore,
     SetCurrentRouteStateAction,
-    ImportDataAction
+    ImportDataAction,
+    TransactionRepository
   ],
   template  : `
     <input
