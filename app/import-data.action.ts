@@ -8,13 +8,16 @@ import {TransactionRepository} from './transaction-repository.service';
 export function fn(TransactionRepository: TransactionRepository,
                    csv: string): Promise<any[]> {
   return new Promise((resolve) => {
+    const onComplete = async (results: PapaParse.ParseResult) => {
+      TransactionRepository.initialize();
+      await TransactionRepository.store(results.data);
+      resolve(await TransactionRepository.get());
+    };
+
     papaparse.parse(csv, {
       header  : true,
-      complete: (results: PapaParse.ParseResult) => { 
-        TransactionRepository.store(results.data);
-        TransactionRepository.get().then(result => resolve(result));
-      }
-    });
+      complete: onComplete
+    } as PapaParse.ParseConfig);
   });
 }
 

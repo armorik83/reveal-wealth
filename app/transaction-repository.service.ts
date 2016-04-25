@@ -15,26 +15,28 @@ export class TransactionRepository {
   constructor() {
     this.db = <ExtendedDexie>new Dexie(APP_NAME);
     this.db.version(1).stores({
-      moneyTransactions: '++id,Type,Date'
+      moneyTransactions: '++id, Type, Date, Note'
     });
-    this.db.open();
   }
-  
-  store(importedResult: any[]): void {
-    importedResult.forEach((item) => {
-      this.db.moneyTransactions.put({
-        Type: item.Type,
-        Date: item.Date,
+
+  initialize(): void {
+    window.indexedDB.deleteDatabase(APP_NAME);
+  }
+
+  async store(importedResult: any[]): Promise<any> {
+    return await this.db.transaction('rw', this.db.moneyTransactions, () => {
+      importedResult.forEach((item) => {
+        this.db.moneyTransactions.add({
+          Type: item.Type,
+          Date: item.Date,
+          Note: item.Note
+        });
       });
     });
   }
 
   async get(): Promise<any> {
-    return new Promise(async (resolve) => {
-      const array = await this.db.moneyTransactions.toArray()
-      console.log(array);
-      resolve(array);
-    })
+    return await this.db.moneyTransactions.toArray();
   }
-  
+
 }

@@ -1,4 +1,5 @@
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/operator/debounceTime';
 
 import {Dispatcher} from './dispatcher';
@@ -9,12 +10,10 @@ export abstract class State {}
 
 export class Store<ST extends State> {
 
-  private complete: BehaviorSubject<ST>;
+  private complete = new ReplaySubject<ST>();
 
   constructor(protected state: ST,
               private Dispatcher: Dispatcher<ST>) {
-    this.complete = new BehaviorSubject<ST>(state);
-
     this.Dispatcher.subscribe((reducer) => {
       reducer(this.state).then((st) => {
         this.complete.next(st);
@@ -23,15 +22,18 @@ export class Store<ST extends State> {
   }
 
   /**
+   * @param cdRef
    * @param listener
-   * @return Function = disposer
+   * @return Function - disposer
    */
-  onComplete(listener: Listener<ST>): Function {
-    this.complete
+  onComplete(cdRef: any, listener: Listener<ST>): Function {
+    const disposer = this.complete
       .debounceTime(1)
-      .subscribe((st: ST) => listener(st));
-
-    return () => this.complete.unsubscribe();
+      .subscribe((st: ST) => {
+        listener(st);
+        cdRef.detectChanges();
+      });
+    return () => disposer.unsubscribe();
   }
 
 }

@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, ChangeDetectorRef} from 'angular2/core';
 
 import {SetCurrentRouteStateAction} from './set-current-route-state.action';
 import {ImportDataAction} from './import-data.action';
@@ -14,8 +14,6 @@ import {TransactionRepository} from './transaction-repository.service';
   selector  : 'rw-import-data',
   directives: [InputFileDirective],
   providers : [
-    AppDispatcher,
-    AppStore,
     SetCurrentRouteStateAction,
     ImportDataAction,
     TransactionRepository
@@ -44,6 +42,7 @@ export class ImportDataComponent extends AbstractRouterComponent {
 
   constructor(protected AppStore: AppStore,
               protected SetCurrentRouteStateAction: SetCurrentRouteStateAction,
+              private cdRef: ChangeDetectorRef,
               private AppDispatcher: AppDispatcher,
               private RouteChanger: RouteChanger,
               private ImportDataAction: ImportDataAction) {
@@ -59,9 +58,10 @@ export class ImportDataComponent extends AbstractRouterComponent {
   ngOnInit(): void {
     super.ngOnInit();
 
-    this.AppStore.onComplete((st: AppState) => {
-      console.log(st);
+    const disposer = this.AppStore.onComplete(this.cdRef, (st: AppState) => {
+      //
     });
+    this.disposers.push(disposer);
 
     this.AppDispatcher.emit(this.SetCurrentRouteStateAction.create(
       ImportDataComponent.routeName)

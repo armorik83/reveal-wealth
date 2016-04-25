@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, ChangeDetectorRef} from 'angular2/core';
 
 import {IncrementAction} from './increment.action';
 import {SetCurrentRouteStateAction} from './set-current-route-state.action';
@@ -10,13 +10,18 @@ import {AbstractRouterComponent} from './abstract-router.component';
 @Component({
   selector : 'rw-transactions',
   providers: [
-    AppDispatcher,
-    AppStore,
     SetCurrentRouteStateAction,
     IncrementAction
   ],
   template : `
     <button (click)="onClick()">increment</button>
+    <ul>
+      <li *ngFor="#moneyTransaction of moneyTransactions">
+        <span>{{moneyTransaction.Type}}</span>
+        <span>{{moneyTransaction.Date}}</span>
+        <span>{{moneyTransaction.Note}}</span>
+      </li>
+    </ul>
   `
 })
 export class TransactionsComponent extends AbstractRouterComponent {
@@ -24,8 +29,11 @@ export class TransactionsComponent extends AbstractRouterComponent {
   /* it has the string literal type */
   static routeName: 'TransactionsComponent' = 'TransactionsComponent';
 
+  private moneyTransactions: any[] = [];
+
   constructor(protected AppStore: AppStore,
               protected SetCurrentRouteStateAction: SetCurrentRouteStateAction,
+              private cdRef: ChangeDetectorRef,
               private AppDispatcher: AppDispatcher,
               private IncrementAction: IncrementAction) {
     super(AppStore, SetCurrentRouteStateAction);
@@ -37,14 +45,22 @@ export class TransactionsComponent extends AbstractRouterComponent {
   ngOnInit(): void {
     super.ngOnInit();
 
-    const disposer = this.AppStore.onComplete((st: AppState) => {
-      console.log(st);
+    const disposer = this.AppStore.onComplete(this.cdRef, (st: AppState) => {
+      this.moneyTransactions = st.json;
     });
     this.disposers.push(disposer);
 
     this.AppDispatcher.emit(this.SetCurrentRouteStateAction.create(
       TransactionsComponent.routeName)
     );
+  }
+
+  ngAfterContentChecked(): void {
+    console.log('TransactionsComponent ngAfterContentChecked');
+  }
+
+  ngAfterViewChecked(): void {
+    console.log('TransactionsComponent ngAfterViewChecked');
   }
 
   /**

@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, ChangeDetectorRef} from 'angular2/core';
 import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from 'angular2/router';
 
 import {AbstractComponent} from './abstract.component';
@@ -6,7 +6,7 @@ import {TransactionsComponent} from './transactions.component';
 import {ImportDataComponent} from './import-data.component';
 import {NavComponent} from './nav.component';
 import {AppDispatcher} from './app.dispatcher';
-import {AppStore} from './app.store';
+import {AppStore, AppState} from './app.store';
 import {RouteChanger} from './route-changer.service';
 import {ToTransactionsAction} from './to-transactions.action';
 import {ToImportDataAction} from './to-import-data.action';
@@ -33,9 +33,17 @@ import {ToImportDataAction} from './to-import-data.action';
 ])
 export class AppComponent extends AbstractComponent {
 
-  constructor(private AppDispatcher: AppDispatcher,
+  constructor(private cdRef: ChangeDetectorRef,
+              private AppDispatcher: AppDispatcher,
               private AppStore: AppStore) {
     super();
+  }
+
+  ngOnInit(): void {
+    const disposer = this.AppStore.onComplete(this.cdRef, (st: AppState) => {
+      //
+    });
+    this.disposers.push(disposer);
   }
 
 }
