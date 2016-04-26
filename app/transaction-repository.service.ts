@@ -2,6 +2,7 @@ import {Injectable} from 'angular2/core';
 import Dexie from 'dexie';
 
 import {APP_NAME} from './constants';
+import {WindowProvider} from './window-provider.service';
 
 interface ExtendedDexie extends Dexie {
   moneyTransactions: Dexie.Table<any, any>;
@@ -10,9 +11,12 @@ interface ExtendedDexie extends Dexie {
 @Injectable()
 export class TransactionRepository {
 
+  private window: Window;
   private db: ExtendedDexie;
 
-  constructor() {
+  constructor(WindowProvider: WindowProvider) {
+    this.window = WindowProvider.getWindow();
+
     this.db = <ExtendedDexie>new Dexie(APP_NAME);
     this.db.version(1).stores({
       moneyTransactions: '++id, Type, Date, Note'
@@ -20,7 +24,7 @@ export class TransactionRepository {
   }
 
   initialize(): void {
-    window.indexedDB.deleteDatabase(APP_NAME);
+    this.window.indexedDB.deleteDatabase(APP_NAME);
   }
 
   async store(importedResult: any[]): Promise<any> {
