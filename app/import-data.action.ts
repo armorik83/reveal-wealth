@@ -11,9 +11,8 @@ type ParseConfig = PapaParse.ParseConfig;
 export function fn(repository: MoneyTransactionRepository, csv: string): Promise<any[]> {
   return new Promise((resolve) => {
     const onComplete = async (results: ParseResult) => {
-      repository.initialize();
       await repository.store(results.data);
-      resolve(await repository.get());
+      resolve(await repository.pull());
     };
 
     papaparse.parse(csv, {

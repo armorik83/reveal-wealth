@@ -1,33 +1,20 @@
 import {Injectable} from 'angular2/core';
-import Dexie from 'dexie';
 
-import {APP_NAME} from './constants';
-import {WindowProvider} from './window-provider.service';
-
-interface ExtendedDexie extends Dexie {
-  moneyTransactions: Dexie.Table<any, any>;
-}
+import {AppDatabase} from './app-database.ts';
+import {AppDatabaseProvider} from './app-database-provider.service';
 
 @Injectable()
 export class MoneyTransactionRepository {
 
-  private window: Window;
-  private db: ExtendedDexie;
+  private db: AppDatabase;
 
-  constructor(WindowProvider: WindowProvider) {
-    this.window = WindowProvider.getWindow();
-
-    this.db = <ExtendedDexie>new Dexie(APP_NAME);
-    this.db.version(1).stores({
-      moneyTransactions: '++id, Type, Date, Note'
-    });
-  }
-
-  initialize(): void {
-    this.window.indexedDB.deleteDatabase(APP_NAME);
+  constructor(AppDatabaseProvider: AppDatabaseProvider) {
+    const AppDatabase = AppDatabaseProvider.getConstructor();
+    this.db           = new AppDatabase();
   }
 
   async store(importedResult: any[]): Promise<any> {
+    this.initialize();
     return await this.db.transaction('rw', this.db.moneyTransactions, () => {
       importedResult.forEach((item) => {
         this.db.moneyTransactions.add({
@@ -39,8 +26,12 @@ export class MoneyTransactionRepository {
     });
   }
 
-  async get(): Promise<any> {
+  async pull(): Promise<any> {
     return await this.db.moneyTransactions.toArray();
+  }
+
+  private initialize(): void {
+    this.db.initialize();
   }
 
 }

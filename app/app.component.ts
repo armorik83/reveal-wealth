@@ -5,9 +5,11 @@ import {AbstractRootComponent} from './abstract.component';
 import {MoneyTransactionsComponent} from './money-transactions.component';
 import {ImportDataComponent} from './import-data.component';
 import {NavComponent} from './nav.component';
+
 import {AppDispatcher} from './app.dispatcher';
-import {AppStore, AppState} from './app.store';
+import {AppStore} from './app.store';
 import {RouteChanger} from './route-changer.service';
+import {AppDatabaseProvider} from "./app-database-provider.service";
 import {ToMoneyTransactionsAction} from './to-money-transactions.action';
 import {ToImportDataAction} from './to-import-data.action';
 
@@ -19,6 +21,7 @@ import {ToImportDataAction} from './to-import-data.action';
     AppDispatcher,
     AppStore,
     RouteChanger,
+    AppDatabaseProvider,
     ToMoneyTransactionsAction,
     ToImportDataAction
   ],
