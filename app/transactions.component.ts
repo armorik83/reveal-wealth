@@ -34,9 +34,9 @@ export class TransactionsComponent extends AbstractRouterComponent {
   constructor(protected cdRef: ChangeDetectorRef,
               protected Dispatcher: AppDispatcher,
               protected Store: AppStore,
-              protected SetCurrentRouteStateAction: SetCurrentRouteStateAction,
+              private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private IncrementAction: IncrementAction) {
-    super(cdRef, Dispatcher, Store, SetCurrentRouteStateAction);
+    super(cdRef, Dispatcher, Store);
   }
 
   /**

@@ -43,10 +43,10 @@ export class ImportDataComponent extends AbstractRouterComponent {
   constructor(protected cdRef: ChangeDetectorRef,
               protected Dispatcher: AppDispatcher,
               protected Store: AppStore,
-              protected SetCurrentRouteStateAction: SetCurrentRouteStateAction,
+              private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private RouteChanger: RouteChanger,
               private ImportDataAction: ImportDataAction) {
-    super(cdRef, Dispatcher, Store, SetCurrentRouteStateAction);
+    super(cdRef, Dispatcher, Store);
 
     this.importedCsv   = null;
     this.disableImport = true;

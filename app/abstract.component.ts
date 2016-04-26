@@ -74,8 +74,7 @@ export class AbstractRouterComponent extends AbstractComponent {
 
   constructor(protected cdRef: ChangeDetectorRef,
               protected Dispatcher: AppDispatcher,
-              protected Store: AppStore,
-              protected SetCurrentRouteStateAction: SetCurrentRouteStateAction) {
+              protected Store: AppStore) {
     super();
   }
 
