@@ -3,10 +3,10 @@ import {Router} from 'angular2/router';
 
 import {Action} from './flux/action';
 import {AppState} from './app.store';
-import {TransactionsComponent} from './transactions.component';
+import {MoneyTransactionsComponent} from './money-transactions.component.ts';
 
 @Injectable()
-export class ToTransactionsAction extends Action<AppState> {
+export class ToMoneyTransactionsAction extends Action<AppState> {
 
   constructor(private Router: Router) {
     super();
@@ -14,7 +14,7 @@ export class ToTransactionsAction extends Action<AppState> {
 
   create(): this {
     this.createReducer((st: AppState) => {
-      st.routeState = TransactionsComponent.routeName;
+      st.routeState = MoneyTransactionsComponent.routeName;
       return new Promise(async (resolve) => {
         await this.Router.navigate([st.routeState]);
         resolve(st);

@@ -24,10 +24,10 @@ import {AbstractRouterComponent} from './abstract.component';
     </ul>
   `
 })
-export class TransactionsComponent extends AbstractRouterComponent {
+export class MoneyTransactionsComponent extends AbstractRouterComponent {
 
   /* it has the string literal type */
-  static routeName: 'TransactionsComponent' = 'TransactionsComponent';
+  static routeName: 'MoneyTransactionsComponent' = 'MoneyTransactionsComponent';
 
   private moneyTransactions: any[] = [];
 
@@ -46,7 +46,7 @@ export class TransactionsComponent extends AbstractRouterComponent {
     super.ngOnInit();
 
     this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
-      TransactionsComponent.routeName
+      MoneyTransactionsComponent.routeName
     ));
   }
 

@@ -4,7 +4,7 @@ import {AppDispatcher} from './app.dispatcher';
 import {State, Store} from './flux/store';
 
 export type RouteState =
-  'TransactionsComponent' |
+  'MoneyTransactionsComponent' |
   'ImportDataComponent' |
   'n/a';
 

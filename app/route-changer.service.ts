@@ -1,13 +1,13 @@
 import {Injectable} from 'angular2/core';
 import {AppDispatcher} from './app.dispatcher';
-import {ToTransactionsAction} from './to-transactions.action';
+import {ToMoneyTransactionsAction} from './to-money-transactions.action.ts';
 import {ToImportDataAction} from './to-import-data.action';
 
 @Injectable()
 export class RouteChanger {
 
   constructor(private AppDispatcher: AppDispatcher,
-              private ToTransactionsAction: ToTransactionsAction,
+              private ToTransactionsAction: ToMoneyTransactionsAction,
               private ToImportDataAction: ToImportDataAction) {
     // noop
   }

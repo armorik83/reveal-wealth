@@ -9,7 +9,7 @@ interface ExtendedDexie extends Dexie {
 }
 
 @Injectable()
-export class TransactionRepository {
+export class MoneyTransactionRepository {
 
   private window: Window;
   private db: ExtendedDexie;

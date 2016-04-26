@@ -3,12 +3,12 @@ import * as papaparse from 'papaparse';
 
 import {Action} from './flux/action';
 import {AppState} from './app.store';
-import {TransactionRepository} from './transaction-repository.service';
+import {MoneyTransactionRepository} from './money-transaction-repository.service.ts';
 
 type ParseResult = PapaParse.ParseResult;
 type ParseConfig = PapaParse.ParseConfig;
 
-export function fn(repository: TransactionRepository, csv: string): Promise<any[]> {
+export function fn(repository: MoneyTransactionRepository, csv: string): Promise<any[]> {
   return new Promise((resolve) => {
     const onComplete = async (results: ParseResult) => {
       repository.initialize();
@@ -26,13 +26,13 @@ export function fn(repository: TransactionRepository, csv: string): Promise<any[
 @Injectable()
 export class ImportDataAction extends Action<AppState> {
 
-  constructor(private TransactionRepository: TransactionRepository) {
+  constructor(private MoneyTransactionRepository: MoneyTransactionRepository) {
     super();
   }
 
   create(csv: string): this {
     this.createReducer(async (st: AppState) => {
-      st.json = await fn(this.TransactionRepository, csv);
+      st.json = await fn(this.MoneyTransactionRepository, csv);
       return Promise.resolve(st);
     });
     return this;
