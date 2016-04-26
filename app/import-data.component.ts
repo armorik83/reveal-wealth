@@ -8,7 +8,7 @@ import {RouteChanger} from './route-changer.service';
 
 import {AbstractRouterComponent} from './abstract.component';
 import {InputFileDirective} from './input-file.directive';
-import {MoneyTransactionRepository} from './money-transaction-repository.service.ts';
+import {MoneyTransactionRepository} from './money-transaction-repository.service';
 
 @Component({
   selector  : 'rw-import-data',

@@ -1,6 +1,6 @@
 import {Injectable} from 'angular2/core';
 import {AppDispatcher} from './app.dispatcher';
-import {ToMoneyTransactionsAction} from './to-money-transactions.action.ts';
+import {ToMoneyTransactionsAction} from './to-money-transactions.action';
 import {ToImportDataAction} from './to-import-data.action';
 
 @Injectable()

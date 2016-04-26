@@ -2,13 +2,13 @@ import {Component, ChangeDetectorRef} from 'angular2/core';
 import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from 'angular2/router';
 
 import {AbstractRootComponent} from './abstract.component';
-import {MoneyTransactionsComponent} from './money-transactions.component.ts';
+import {MoneyTransactionsComponent} from './money-transactions.component';
 import {ImportDataComponent} from './import-data.component';
 import {NavComponent} from './nav.component';
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
 import {RouteChanger} from './route-changer.service';
-import {ToMoneyTransactionsAction} from './to-money-transactions.action.ts';
+import {ToMoneyTransactionsAction} from './to-money-transactions.action';
 import {ToImportDataAction} from './to-import-data.action';
 
 @Component({

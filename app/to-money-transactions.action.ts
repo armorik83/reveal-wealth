@@ -3,7 +3,7 @@ import {Router} from 'angular2/router';
 
 import {Action} from './flux/action';
 import {AppState} from './app.store';
-import {MoneyTransactionsComponent} from './money-transactions.component.ts';
+import {MoneyTransactionsComponent} from './money-transactions.component';
 
 @Injectable()
 export class ToMoneyTransactionsAction extends Action<AppState> {

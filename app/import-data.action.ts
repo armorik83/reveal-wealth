@@ -3,7 +3,7 @@ import * as papaparse from 'papaparse';
 
 import {Action} from './flux/action';
 import {AppState} from './app.store';
-import {MoneyTransactionRepository} from './money-transaction-repository.service.ts';
+import {MoneyTransactionRepository} from './money-transaction-repository.service';
 
 type ParseResult = PapaParse.ParseResult;
 type ParseConfig = PapaParse.ParseConfig;
