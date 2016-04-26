@@ -6,7 +6,7 @@ import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
 import {RouteChanger} from './route-changer.service';
 
-import {AbstractRouterComponent} from './abstract-router.component';
+import {AbstractRouterComponent} from './abstract.component';
 import {InputFileDirective} from './input-file.directive';
 import {TransactionRepository} from './transaction-repository.service';
 
@@ -40,13 +40,13 @@ export class ImportDataComponent extends AbstractRouterComponent {
   importedCsv: string;
   disableImport: boolean;
 
-  constructor(protected AppStore: AppStore,
+  constructor(protected cdRef: ChangeDetectorRef,
+              protected Dispatcher: AppDispatcher,
+              protected Store: AppStore,
               protected SetCurrentRouteStateAction: SetCurrentRouteStateAction,
-              private cdRef: ChangeDetectorRef,
-              private AppDispatcher: AppDispatcher,
               private RouteChanger: RouteChanger,
               private ImportDataAction: ImportDataAction) {
-    super(AppStore, SetCurrentRouteStateAction);
+    super(cdRef, Dispatcher, Store, SetCurrentRouteStateAction);
 
     this.importedCsv   = null;
     this.disableImport = true;
@@ -58,14 +58,9 @@ export class ImportDataComponent extends AbstractRouterComponent {
   ngOnInit(): void {
     super.ngOnInit();
 
-    const disposer = this.AppStore.onComplete(this.cdRef, (st: AppState) => {
-      //
-    });
-    this.disposers.push(disposer);
-
-    this.AppDispatcher.emit(this.SetCurrentRouteStateAction.create(
-      ImportDataComponent.routeName)
-    );
+    this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
+      ImportDataComponent.routeName
+    ));
   }
 
   /**
@@ -76,7 +71,7 @@ export class ImportDataComponent extends AbstractRouterComponent {
       return;
     }
 
-    this.AppDispatcher.emit(this.ImportDataAction.create(this.importedCsv));
+    this.Dispatcher.emit(this.ImportDataAction.create(this.importedCsv));
     this.RouteChanger.toTransactions();
   }
 

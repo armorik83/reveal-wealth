@@ -1,7 +1,7 @@
 import {Component, ChangeDetectorRef} from 'angular2/core';
 import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from 'angular2/router';
 
-import {AbstractComponent} from './abstract.component';
+import {AbstractRootComponent} from './abstract.component';
 import {TransactionsComponent} from './transactions.component';
 import {ImportDataComponent} from './import-data.component';
 import {NavComponent} from './nav.component';
@@ -31,19 +31,12 @@ import {ToImportDataAction} from './to-import-data.action';
   {path: '/transactions', name: TransactionsComponent.routeName, component: TransactionsComponent, useAsDefault: true},
   {path: '/import',       name: ImportDataComponent.routeName,   component: ImportDataComponent}
 ])
-export class AppComponent extends AbstractComponent {
+export class AppComponent extends AbstractRootComponent {
 
-  constructor(private cdRef: ChangeDetectorRef,
-              private AppDispatcher: AppDispatcher,
-              private AppStore: AppStore) {
-    super();
-  }
-
-  ngOnInit(): void {
-    const disposer = this.AppStore.onComplete(this.cdRef, (st: AppState) => {
-      //
-    });
-    this.disposers.push(disposer);
+  constructor(protected cdRef: ChangeDetectorRef,
+              protected Dispatcher: AppDispatcher,
+              protected Store: AppStore) {
+    super(cdRef, Dispatcher, Store);
   }
 
 }

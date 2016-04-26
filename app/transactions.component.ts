@@ -5,7 +5,7 @@ import {SetCurrentRouteStateAction} from './set-current-route-state.action';
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
 
-import {AbstractRouterComponent} from './abstract-router.component';
+import {AbstractRouterComponent} from './abstract.component';
 
 @Component({
   selector : 'rw-transactions',
@@ -31,12 +31,12 @@ export class TransactionsComponent extends AbstractRouterComponent {
 
   private moneyTransactions: any[] = [];
 
-  constructor(protected AppStore: AppStore,
+  constructor(protected cdRef: ChangeDetectorRef,
+              protected Dispatcher: AppDispatcher,
+              protected Store: AppStore,
               protected SetCurrentRouteStateAction: SetCurrentRouteStateAction,
-              private cdRef: ChangeDetectorRef,
-              private AppDispatcher: AppDispatcher,
               private IncrementAction: IncrementAction) {
-    super(AppStore, SetCurrentRouteStateAction);
+    super(cdRef, Dispatcher, Store, SetCurrentRouteStateAction);
   }
 
   /**
@@ -45,29 +45,23 @@ export class TransactionsComponent extends AbstractRouterComponent {
   ngOnInit(): void {
     super.ngOnInit();
 
-    const disposer = this.AppStore.onComplete(this.cdRef, (st: AppState) => {
-      this.moneyTransactions = st.json;
-    });
-    this.disposers.push(disposer);
-
-    this.AppDispatcher.emit(this.SetCurrentRouteStateAction.create(
-      TransactionsComponent.routeName)
-    );
+    this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
+      TransactionsComponent.routeName
+    ));
   }
 
-  ngAfterContentChecked(): void {
-    console.log('TransactionsComponent ngAfterContentChecked');
-  }
-
-  ngAfterViewChecked(): void {
-    console.log('TransactionsComponent ngAfterViewChecked');
+  /**
+   * @param st
+   */
+  storeOnComplete(st: AppState): void {
+    this.moneyTransactions = st.json;
   }
 
   /**
    * @return void
    */
   onClick(): void {
-    this.AppDispatcher.emit(this.IncrementAction.create(3));
+    this.Dispatcher.emit(this.IncrementAction.create(3));
   }
 
 }
