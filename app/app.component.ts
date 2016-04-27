@@ -1,36 +1,54 @@
-import {Component} from 'angular2/core';
+import {Component, ChangeDetectorRef} from 'angular2/core';
 import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from 'angular2/router';
+
+import {AbstractRootComponent} from './abstract.component';
+import {MoneyTransactionsComponent} from './money-transactions.component';
+import {ImportDataComponent} from './import-data.component';
+import {NavComponent} from './nav.component';
 
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore} from './app.store';
-import {AbstractComponent} from './abstract.component';
-import {TransactionsComponent} from './transactions.component';
-import {ImportDataComponent} from './import-data.component';
+import {RouteChanger} from './route-changer.service';
+import {AppDatabaseProvider} from "./app-database-provider.service";
+import {ToMoneyTransactionsAction} from './to-money-transactions.action';
+import {ToImportDataAction} from './to-import-data.action';
 
 @Component({
   selector  : 'rw-app',
-  directives: [ROUTER_DIRECTIVES],
+  directives: [ROUTER_DIRECTIVES, NavComponent],
   providers : [
     ROUTER_PROVIDERS,
     AppDispatcher,
-    AppStore
+    AppStore,
+    RouteChanger,
+    AppDatabaseProvider,
+    ToMoneyTransactionsAction,
+    ToImportDataAction
   ],
   template  : `
-    <nav>
-      <a [routerLink]="['${TransactionsComponent.routeName}']">Transactions</a>
-      <a [routerLink]="['${ImportDataComponent.routeName}']">ImportData</a>
-    </nav>
+    <rw-nav></rw-nav>
     <router-outlet></router-outlet> 
   `
 })
 @RouteConfig([
-  {path: '/transactions', name: TransactionsComponent.routeName, component: TransactionsComponent, useAsDefault: true},
-  {path: '/import',       name: ImportDataComponent.routeName,   component: ImportDataComponent}
+  {
+    useAsDefault: true,
+    path        : '/money-transactions',
+    name        : MoneyTransactionsComponent.routeName,
+    component   : MoneyTransactionsComponent
+  },
+  {
+    path        : '/import',
+    name        : ImportDataComponent.routeName,
+    component   : ImportDataComponent
+  }
 ])
-export class AppComponent extends AbstractComponent {
+export class AppComponent extends AbstractRootComponent {
 
-  constructor() {
-    super();
+  constructor(protected cdRef: ChangeDetectorRef,
+              protected Dispatcher: AppDispatcher,
+              protected Store: AppStore) {
+    super(cdRef, Dispatcher, Store);
   }
 
 }

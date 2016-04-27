@@ -1,12 +1,23 @@
-import {Component} from 'angular2/core';
+import {Component, ChangeDetectorRef} from 'angular2/core';
 
-import {AbstractRouterComponent} from './abstract-router.component';
-import {AppStore} from './app.store';
+import {SetCurrentRouteStateAction} from './set-current-route-state.action';
+import {ImportDataAction} from './import-data.action';
+import {AppDispatcher} from './app.dispatcher';
+import {AppStore, AppState} from './app.store';
+import {RouteChanger} from './route-changer.service';
+
+import {AbstractRouterComponent} from './abstract.component';
 import {InputFileDirective} from './input-file.directive';
+import {MoneyTransactionRepository} from './money-transaction-repository.service';
 
 @Component({
   selector  : 'rw-import-data',
   directives: [InputFileDirective],
+  providers : [
+    SetCurrentRouteStateAction,
+    ImportDataAction,
+    MoneyTransactionRepository
+  ],
   template  : `
     <input
       type="file"
@@ -14,7 +25,7 @@ import {InputFileDirective} from './input-file.directive';
     >
 
     <button
-      (click)="onClick()"
+      (click)="onClickImport()"
       [attr.disabled]="disableImport ? true : null"
     >
       Import
@@ -23,13 +34,20 @@ import {InputFileDirective} from './input-file.directive';
 })
 export class ImportDataComponent extends AbstractRouterComponent {
 
-  static routeName = 'ImportDataComponent';
+  /* it has the string literal type */
+  static routeName: 'ImportDataComponent' = 'ImportDataComponent';
 
   importedCsv: string;
   disableImport: boolean;
 
-  constructor(protected AppStore: AppStore) {
-    super(AppStore);
+  constructor(protected cdRef: ChangeDetectorRef,
+              protected Dispatcher: AppDispatcher,
+              protected Store: AppStore,
+              private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
+              private RouteChanger: RouteChanger,
+              private ImportDataAction: ImportDataAction) {
+    super(cdRef, Dispatcher, Store);
+
     this.importedCsv   = null;
     this.disableImport = true;
   }
@@ -37,12 +55,24 @@ export class ImportDataComponent extends AbstractRouterComponent {
   /**
    * @return void
    */
-  onClick(): void {
+  ngOnInit(): void {
+    super.ngOnInit();
+
+    this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
+      ImportDataComponent.routeName
+    ));
+  }
+
+  /**
+   * @return void
+   */
+  onClickImport(): void {
     if (!this.importedCsv) {
       return;
     }
 
-    console.log(this.importedCsv);
+    this.Dispatcher.emit(this.ImportDataAction.create(this.importedCsv));
+    this.RouteChanger.toTransactions();
   }
 
   /**
