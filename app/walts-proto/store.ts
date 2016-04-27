@@ -1,10 +1,10 @@
+import {ChangeDetectorRef} from 'angular2/core';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
-import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/operator/debounceTime';
 
 import {Dispatcher} from './dispatcher';
 
-export type Listener<ST extends State> = (st: ST) => void;
+type Listener<ST extends State> = (st: ST) => void;
 
 export abstract class State {}
 
@@ -26,8 +26,9 @@ export class Store<ST extends State> {
    * @param listener
    * @return Function - disposer
    */
-  onComplete(cdRef: any, listener: Listener<ST>): Function {
+  onComplete(cdRef: ChangeDetectorRef, listener: Listener<ST>): Function {
     const disposer = this.complete
+      .scan((acc, val) => Object.assign({}, acc, val))
       .debounceTime(1)
       .subscribe((st: ST) => {
         listener(st);

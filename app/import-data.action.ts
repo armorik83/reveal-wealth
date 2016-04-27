@@ -1,7 +1,7 @@
 import {Injectable} from 'angular2/core';
 import * as papaparse from 'papaparse';
+import {Action} from './walts-proto';
 
-import {Action} from './flux/action';
 import {AppState} from './app.store';
 import {MoneyTransactionRepository} from './money-transaction-repository.service';
 

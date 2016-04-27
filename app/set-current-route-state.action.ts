@@ -1,6 +1,6 @@
 import {Injectable} from 'angular2/core';
+import {Action} from './walts-proto';
 
-import {Action} from './flux/action';
 import {AppState, RouteState} from './app.store';
 
 @Injectable()

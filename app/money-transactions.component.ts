@@ -1,11 +1,10 @@
 import {Component, ChangeDetectorRef} from 'angular2/core';
+import {RouterView} from './walts-proto';
 
 import {IncrementAction} from './increment.action';
 import {SetCurrentRouteStateAction} from './set-current-route-state.action';
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
-
-import {AbstractRouterComponent} from './abstract.component';
 
 @Component({
   selector : 'rw-transactions',
@@ -24,7 +23,7 @@ import {AbstractRouterComponent} from './abstract.component';
     </ul>
   `
 })
-export class MoneyTransactionsComponent extends AbstractRouterComponent {
+export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppStore, AppState> {
 
   /* it has the string literal type */
   static routeName: 'MoneyTransactionsComponent' = 'MoneyTransactionsComponent';
@@ -53,7 +52,7 @@ export class MoneyTransactionsComponent extends AbstractRouterComponent {
   /**
    * @param st
    */
-  storeOnComplete(st: AppState): void {
+  wlOnComplete(st: AppState): void {
     this.moneyTransactions = st.json;
   }
 

@@ -1,15 +1,15 @@
 import {Component, ChangeDetectorRef} from 'angular2/core';
 import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from 'angular2/router';
+import {View} from './walts-proto';
 
-import {AbstractRootComponent} from './abstract.component';
 import {MoneyTransactionsComponent} from './money-transactions.component';
 import {ImportDataComponent} from './import-data.component';
 import {NavComponent} from './nav.component';
 
 import {AppDispatcher} from './app.dispatcher';
-import {AppStore} from './app.store';
+import {AppStore, AppState} from './app.store';
 import {RouteChanger} from './route-changer.service';
-import {AppDatabaseProvider} from "./app-database-provider.service";
+import {AppDatabaseProvider} from './app-database-provider.service';
 import {ToMoneyTransactionsAction} from './to-money-transactions.action';
 import {ToImportDataAction} from './to-import-data.action';
 
@@ -43,7 +43,7 @@ import {ToImportDataAction} from './to-import-data.action';
     component   : ImportDataComponent
   }
 ])
-export class AppComponent extends AbstractRootComponent {
+export class AppComponent extends View<AppDispatcher, AppStore, AppState> {
 
   constructor(protected cdRef: ChangeDetectorRef,
               protected Dispatcher: AppDispatcher,

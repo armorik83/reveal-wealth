@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
+import {AbstractComponent} from './walts-proto';
 
-import {AbstractComponent} from './abstract.component';
 import {RouteChanger} from './route-changer.service';
 
 @Component({

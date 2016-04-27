@@ -1,7 +1,7 @@
 import {Injectable} from 'angular2/core';
 import {Router} from 'angular2/router';
+import {Action} from './walts-proto';
 
-import {Action} from './flux/action';
 import {AppState} from './app.store';
 import {ImportDataComponent} from './import-data.component';
 

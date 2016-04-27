@@ -1,7 +1,7 @@
 import {Injectable} from 'angular2/core';
+import {State, Store} from './walts-proto';
 
 import {AppDispatcher} from './app.dispatcher';
-import {State, Store} from './flux/store';
 
 export type RouteState =
   'MoneyTransactionsComponent' |

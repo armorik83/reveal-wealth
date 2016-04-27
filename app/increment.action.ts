@@ -1,6 +1,6 @@
 import {Injectable} from 'angular2/core';
+import {Action} from './walts-proto';
 
-import {Action} from './flux/action';
 import {AppState} from './app.store';
 
 export function fn(st: AppState, n: number): number {
