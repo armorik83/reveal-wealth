@@ -3,6 +3,14 @@ import {Injectable} from 'angular2/core';
 import {AppDatabaseProvider} from './app-database-provider.service';
 import {AppDatabase} from './app-database';
 
+interface UniqueValues {
+  accounts:      string[];
+  categories:    string[];
+  subcategories: string[];
+  payeePayers:   string[];
+  tags:          string[];
+}
+
 @Injectable()
 export class ImportFacade {
 
@@ -16,47 +24,55 @@ export class ImportFacade {
   async normalize(importedResult: any[]): Promise<any> {
     this.db.initialize();
 
-    let allValues = {
-      account    : [] as string[],
-      category   : [] as string[],
-      subcategory: [] as string[],
-      payeePayer : [] as string[],
-      tag        : [] as string[],
-    };
-    importedResult.forEach((item) => {
-      allValues.account    .push(item['Account']);
-      allValues.account    .push(item['AccountTo']);
-      allValues.category   .push(item['Category']);
-      allValues.subcategory.push(item['Subcategory']);
-      allValues.payeePayer .push(item['Payee/Payer']);
-      allValues.tag        .push(item['Tag']);
-    });
-    const uniqueFilter = (v: string, i: number, self: string[]) => {
-      return !!v && self.indexOf(v) === i;
-    };
-    let uniqueValues = {
-      account    : allValues.account    .filter(uniqueFilter),
-      category   : allValues.category   .filter(uniqueFilter),
-      subcategory: allValues.subcategory.filter(uniqueFilter),
-      payeePayer : allValues.payeePayer .filter(uniqueFilter),
-      tag        : allValues.tag        .filter(uniqueFilter)
-    };
+    // For five of the sub-entity to eliminate duplicate.
+    const uniqueValues = await (async (): Promise<UniqueValues> => {
+      let allValues = {
+        accounts     : [] as string[],
+        categories   : [] as string[],
+        subcategories: [] as string[],
+        payeePayers  : [] as string[],
+        tags         : [] as string[],
+      };
+      importedResult.forEach((item) => {
+        allValues.accounts     .push(item['Account']);
+        allValues.accounts     .push(item['AccountTo']);
+        allValues.categories   .push(item['Category']);
+        allValues.subcategories.push(item['Subcategory']);
+        allValues.payeePayers  .push(item['Payee/Payer']);
+        allValues.tags         .push(item['Tag']);
+      });
 
-    const tables = [
-      this.db.accounts,
-      this.db.categories,
-      this.db.subcategories,
-      this.db.payeePayers,
-      this.db.tags
-    ];
-    await this.db.transaction('rw', tables, () => {
-      uniqueValues.account    .forEach((name) => this.db.accounts.add({name}));
-      uniqueValues.category   .forEach((name) => this.db.categories.add({name}));
-      uniqueValues.subcategory.forEach((name) => this.db.subcategories.add({name}));
-      uniqueValues.payeePayer .forEach((name) => this.db.payeePayers.add({name}));
-      uniqueValues.tag        .forEach((name) => this.db.tags.add({name}));
-    });
+      const uniqueFilter = (v: string, i: number, self: string[]) => {
+        return !!v && self.indexOf(v) === i;
+      };
+      return {
+        accounts     : allValues.accounts     .filter(uniqueFilter),
+        categories   : allValues.categories   .filter(uniqueFilter),
+        subcategories: allValues.subcategories.filter(uniqueFilter),
+        payeePayers  : allValues.payeePayers  .filter(uniqueFilter),
+        tags         : allValues.tags         .filter(uniqueFilter)
+      };
+    })();
 
+    // It adds the entity name that has been the removal of duplication in a database.
+    await (async (_uniqueValues: UniqueValues) => {
+      const tables = [
+        this.db.accounts,
+        this.db.categories,
+        this.db.subcategories,
+        this.db.payeePayers,
+        this.db.tags
+      ];
+      await this.db.transaction('rw', tables, () => {
+        _uniqueValues.accounts     .forEach((name) => this.db.accounts     .add({name}));
+        _uniqueValues.categories   .forEach((name) => this.db.categories   .add({name}));
+        _uniqueValues.subcategories.forEach((name) => this.db.subcategories.add({name}));
+        _uniqueValues.payeePayers  .forEach((name) => this.db.payeePayers  .add({name}));
+        _uniqueValues.tags         .forEach((name) => this.db.tags         .add({name}));
+      });
+    })(uniqueValues);
+
+    // To retain the id of the added entity to the database as a object map.
     const idMap = await (async () => {
       let _idMap = {
         accounts     : {} as {[name: string]: number},
@@ -76,11 +92,9 @@ export class ImportFacade {
       return _idMap;
     })();
 
+    // It will persist main entity in the database.
     return await this.db.transaction('rw', this.db.moneyTransactions, () => {
-      console.log(idMap.accounts);
       importedResult.forEach((item) => {
-        console.log(`item['Account']`, item['Account']);
-        console.log(`idMap.accounts[item['Account']]`, idMap.accounts[item['Account']]);
         this.db.moneyTransactions.add(<any>{
           'type'          : item['Type'],
           'date'          : item['Date'],
