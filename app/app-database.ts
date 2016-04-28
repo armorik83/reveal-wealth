@@ -6,6 +6,7 @@ type Table<T, Key> = Dexie.Table<T, Key>;
 
 interface Entity {
   id?: number;
+  name: string;
 }
 
 interface MoneyTransaction extends Entity {
@@ -25,23 +26,23 @@ interface MoneyTransaction extends Entity {
 }
 
 interface Account extends Entity {
-  account: string;
+  //
 }
 
 interface Category extends Entity {
-  category: string;
+  //
 }
 
 interface Subcategory extends Entity {
-  subcategory: string;
+  //
 }
 
 interface PayeePayer extends Entity {
-  payeePayer: string;
+  //
 }
 
 interface Tag extends Entity {
-  tag: string;
+  //
 }
 
 export class AppDatabase extends Dexie {
@@ -81,11 +82,11 @@ export class AppDatabase extends Dexie {
         'tagId',
         'note'
       ].join(','),
-      accounts     : '++id, &account',
-      categories   : '++id, &category',
-      subcategories: '++id, &subcategory',
-      payeePayers  : '++id, &payeePayer',
-      tags         : '++id, &tag'
+      accounts     : '++id, &name',
+      categories   : '++id, &name',
+      subcategories: '++id, &name',
+      payeePayers  : '++id, &name',
+      tags         : '++id, &name'
     });
   }
 

@@ -7,7 +7,7 @@ import {AppDatabase} from './app-database';
 export class ImportFacade {
 
   private db: AppDatabase;
-  
+
   constructor(AppDatabaseProvider: AppDatabaseProvider) {
     const AppDatabase = AppDatabaseProvider.getConstructor();
     this.db           = new AppDatabase();
@@ -16,122 +16,88 @@ export class ImportFacade {
   async normalize(importedResult: any[]): Promise<any> {
     this.db.initialize();
 
-    const dbTransactionScope = () => {
-      importedResult.forEach(async (item: any) => {
-        const draft = {} as any;
+    let allValues = {
+      account    : [] as string[],
+      category   : [] as string[],
+      subcategory: [] as string[],
+      payeePayer : [] as string[],
+      tag        : [] as string[],
+    };
+    importedResult.forEach((item) => {
+      allValues.account    .push(item['Account']);
+      allValues.account    .push(item['AccountTo']);
+      allValues.category   .push(item['Category']);
+      allValues.subcategory.push(item['Subcategory']);
+      allValues.payeePayer .push(item['Payee/Payer']);
+      allValues.tag        .push(item['Tag']);
+    });
+    const uniqueFilter = (v: string, i: number, self: string[]) => {
+      return !!v && self.indexOf(v) === i;
+    };
+    let uniqueValues = {
+      account    : allValues.account    .filter(uniqueFilter),
+      category   : allValues.category   .filter(uniqueFilter),
+      subcategory: allValues.subcategory.filter(uniqueFilter),
+      payeePayer : allValues.payeePayer .filter(uniqueFilter),
+      tag        : allValues.tag        .filter(uniqueFilter)
+    };
 
-        const tables = [
-          this.db.accounts,
-          this.db.categories,
-          this.db.subcategories,
-          this.db.payeePayers,
-          this.db.tags
-        ];
+    const tables = [
+      this.db.accounts,
+      this.db.categories,
+      this.db.subcategories,
+      this.db.payeePayers,
+      this.db.tags
+    ];
+    await this.db.transaction('rw', tables, () => {
+      uniqueValues.account    .forEach((name) => this.db.accounts.add({name}));
+      uniqueValues.category   .forEach((name) => this.db.categories.add({name}));
+      uniqueValues.subcategory.forEach((name) => this.db.subcategories.add({name}));
+      uniqueValues.payeePayer .forEach((name) => this.db.payeePayers.add({name}));
+      uniqueValues.tag        .forEach((name) => this.db.tags.add({name}));
+    });
 
-        if (item['Account']) {
-          const table   = this.db.accounts;
-          const account = item['Account'];
-          const res     = await table.where('account').equalsIgnoreCase(account);
-          const count   = await res.count();
-          console.log(account, count);
+    const idMap = await (async () => {
+      let _idMap = {
+        accounts     : {} as {[name: string]: number},
+        categories   : {} as {[name: string]: number},
+        subcategories: {} as {[name: string]: number},
+        payeePayers  : {} as {[name: string]: number},
+        tags         : {} as {[name: string]: number}
+      };
+      const promises = [
+        this.db.accounts     .each((item) => _idMap.accounts[item.name]      = item.id),
+        this.db.categories   .each((item) => _idMap.categories[item.name]    = item.id),
+        this.db.subcategories.each((item) => _idMap.subcategories[item.name] = item.id),
+        this.db.payeePayers  .each((item) => _idMap.payeePayers[item.name]   = item.id),
+        this.db.tags         .each((item) => _idMap.tags[item.name]          = item.id)
+      ];
+      await Promise.all(promises);
+      return _idMap;
+    })();
 
-          console.assert(count <= 1, 'Account has been double registration');
-          if (count < 1) {
-            draft.accountId = await table.add({account});
-          } else if (count === 1) {
-            draft.accountId = (await res.first()).id;
-          }
-        }
-
-        if (item['AccountTo']) {
-          const table   = this.db.accounts;
-          const account = item['AccountTo'];
-          const res     = await table.where('account').equalsIgnoreCase(account);
-          const count   = await res.count();
-
-          console.assert(count <= 1, 'Account has been double registration');
-          if (count < 1) {
-            draft.accountToId = await table.add({account});
-          } else if (count === 1) {
-            draft.accountToId = (await res.first()).id;
-          }
-        }
-
-        if (item['Category']) {
-          const table    = this.db.categories;
-          const category = item['Category'];
-          const res      = await table.where('category').equalsIgnoreCase(category);
-          const count    = await res.count();
-
-          console.assert(count <= 1, 'Category has been double registration');
-          if (count < 1) {
-            draft.categoryId = await table.add({category});
-          } else if (count === 1) {
-            draft.categoryId = (await res.first()).id;
-          }
-        }
-
-        if (item['Subcategory']) {
-          const table       = this.db.subcategories;
-          const subcategory = item['Subcategory'];
-          const res         = await table.where('subcategory').equalsIgnoreCase(subcategory);
-          const count       = await res.count();
-
-          console.assert(count <= 1, 'Subcategory has been double registration');
-          if (count < 1) {
-            draft.subcategoryId = await table.add({subcategory});
-          } else if (count === 1) {
-            draft.subcategoryId = (await res.first()).id;
-          }
-        }
-
-        if (item['Payee/Payer']) {
-          const table      = this.db.payeePayers;
-          const payeePayer = item['Payee/Payer'];
-          const res        = await table.where('payeePayer').equalsIgnoreCase(payeePayer);
-          const count      = await res.count();
-
-          console.assert(count <= 1, 'PayeePayer has been double registration');
-          if (count < 1) {
-            draft.payeePayerId = await table.add({payeePayer});
-          } else if (count === 1) {
-            draft.payeePayerId = (await res.first()).id;
-          }
-        }
-
-        if (item['Tag']) {
-          const table = this.db.tags;
-          const tag   = item['Tag'];
-          const res   = await table.where('tag').equalsIgnoreCase(tag);
-          const count = await res.count();
-
-          console.assert(count <= 1, 'Tag has been double registration');
-          if (count < 1) {
-            draft.tagId = await table.add({tag});
-          } else if (count === 1) {
-            draft.tagId = (await res.first()).id;
-          }
-        }
-
-        this.db.moneyTransactions.add({
+    return await this.db.transaction('rw', this.db.moneyTransactions, () => {
+      console.log(idMap.accounts);
+      importedResult.forEach((item) => {
+        console.log(`item['Account']`, item['Account']);
+        console.log(`idMap.accounts[item['Account']]`, idMap.accounts[item['Account']]);
+        this.db.moneyTransactions.add(<any>{
           'type'          : item['Type'],
           'date'          : item['Date'],
-          'accountId'     : draft.accountId,
+          'accountId'     : idMap.accounts[item['Account']],
           'currencyCode'  : item['CurrencyCode'],
           'amount'        : item['Amount'],
-          'accountToId'   : draft.accountToId,
+          'accountToId'   : idMap.accounts[item['Account']],
           'currencyCodeTo': item['CurrencyCodeTo'],
           'amountTo'      : item['AmountTo'],
-          'categoryId'    : draft.categoryId,
-          'subcategoryId' : draft.subcategoryId,
-          'payeePayerId'  : draft.payeePayerId,
-          'tagId'         : draft.tagId,
+          'categoryId'    : idMap.categories[item['Category']],
+          'subcategoryId' : idMap.subcategories[item['Subcategory']],
+          'payeePayerId'  : idMap.payeePayers[item['Payee/Payer']],
+          'tagId'         : idMap.tags[item['Tag']],
           'note'          : item['Note']
         });
       });
-    };
-
-    return await this.db.transaction('rw', this.db.moneyTransactions, dbTransactionScope);
+    });
   }
 
 }
