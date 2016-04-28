@@ -3,16 +3,16 @@ import * as papaparse from 'papaparse';
 import {Action} from './walts-proto';
 
 import {AppState} from './app.store';
-import {MoneyTransactionRepository} from './money-transaction-repository.service';
+import {ImportFacade} from './import-facade.service';
 
 type ParseResult = PapaParse.ParseResult;
 type ParseConfig = PapaParse.ParseConfig;
 
-export function fn(repository: MoneyTransactionRepository, csv: string): Promise<any[]> {
+export function fn(ImportFacade: ImportFacade, csv: string): Promise<any[]> {
   return new Promise((resolve) => {
     const onComplete = async (results: ParseResult) => {
-      await repository.store(results.data);
-      resolve(await repository.pull());
+      await ImportFacade.normalize(results.data);
+      resolve();
     };
 
     papaparse.parse(csv, {
@@ -25,13 +25,13 @@ export function fn(repository: MoneyTransactionRepository, csv: string): Promise
 @Injectable()
 export class ImportDataAction extends Action<AppState> {
 
-  constructor(private MoneyTransactionRepository: MoneyTransactionRepository) {
+  constructor(private ImportFacade: ImportFacade) {
     super();
   }
 
   create(csv: string): this {
     this.createReducer(async (st: AppState) => {
-      st.json = await fn(this.MoneyTransactionRepository, csv);
+      st.json = await fn(this.ImportFacade, csv);
       return Promise.resolve(st);
     });
     return this;
