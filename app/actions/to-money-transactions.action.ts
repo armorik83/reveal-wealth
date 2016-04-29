@@ -1,9 +1,9 @@
 import {Injectable} from 'angular2/core';
 import {Router} from 'angular2/router';
-import {Action} from './walts-proto';
+import {Action} from '../walts-proto';
 
-import {AppState} from './app.store';
-import {MoneyTransactionsComponent} from './money-transactions.component';
+import {routeNames} from '../app-router-definition';
+import {AppState} from '../app.store';
 
 @Injectable()
 export class ToMoneyTransactionsAction extends Action<AppState> {
@@ -14,7 +14,7 @@ export class ToMoneyTransactionsAction extends Action<AppState> {
 
   create(): this {
     this.createReducer((st: AppState) => {
-      st.routeState = MoneyTransactionsComponent.routeName;
+      st.routeState = routeNames.MoneyTransactionsComponent;
       return new Promise(async (resolve) => {
         await this.Router.navigate([st.routeState]);
         resolve(st);

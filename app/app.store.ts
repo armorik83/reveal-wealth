@@ -2,22 +2,21 @@ import {Injectable} from 'angular2/core';
 import {State, Store} from './walts-proto';
 
 import {AppDispatcher} from './app.dispatcher';
-
-export type RouteState =
-  'MoneyTransactionsComponent' |
-  'ImportDataComponent' |
-  'n/a';
+import {BindableMoneyTransaction} from './domain/application/money-transaction/bindable-money-transaction';
+import {RouteState} from './app-router-definition';
 
 export class AppState extends State {
-  routeState: RouteState;
-  num: number;
-  json: any[];
+  routeState:        RouteState;
+  num:               number;
+  moneyTransactions: BindableMoneyTransaction[];
+  moneyTransaction:  BindableMoneyTransaction;
 }
 
 const INIT_STATE: AppState = {
-  routeState: 'n/a',
-  num       : 0,
-  json      : []
+  routeState       : 'n/a',
+  num              : 0,
+  moneyTransactions: [],
+  moneyTransaction : null
 };
 
 @Injectable()
