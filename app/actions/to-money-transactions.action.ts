@@ -1,9 +1,9 @@
 import {Injectable} from 'angular2/core';
 import {Router} from 'angular2/router';
-import {Action} from './walts-proto';
+import {Action} from '../walts-proto';
 
-import {AppState} from './app.store';
-import {MoneyTransactionsComponent} from './money-transactions.component';
+import {AppState} from '../app.store';
+import {MoneyTransactionsComponent} from '../money-transactions.component';
 
 @Injectable()
 export class ToMoneyTransactionsAction extends Action<AppState> {

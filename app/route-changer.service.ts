@@ -1,7 +1,7 @@
 import {Injectable} from 'angular2/core';
 import {AppDispatcher} from './app.dispatcher';
-import {ToMoneyTransactionsAction} from './to-money-transactions.action';
-import {ToImportDataAction} from './to-import-data.action';
+import {ToMoneyTransactionsAction} from './actions/to-money-transactions.action';
+import {ToImportDataAction} from './actions/to-import-data.action';
 
 @Injectable()
 export class RouteChanger {

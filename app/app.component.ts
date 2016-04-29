@@ -6,12 +6,12 @@ import {MoneyTransactionsComponent} from './money-transactions.component';
 import {ImportDataComponent} from './import-data.component';
 import {NavComponent} from './nav.component';
 
+import {ToMoneyTransactionsAction} from './actions/to-money-transactions.action';
+import {ToImportDataAction} from './actions/to-import-data.action';
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
 import {RouteChanger} from './route-changer.service';
 import {AppDatabaseProvider} from './app-database-provider.service';
-import {ToMoneyTransactionsAction} from './to-money-transactions.action';
-import {ToImportDataAction} from './to-import-data.action';
 
 @Component({
   selector  : 'rw-app',

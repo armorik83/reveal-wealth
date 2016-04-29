@@ -1,9 +1,9 @@
 import {Injectable} from 'angular2/core';
 import {Router} from 'angular2/router';
-import {Action} from './walts-proto';
+import {Action} from '../walts-proto';
 
-import {AppState} from './app.store';
-import {ImportDataComponent} from './import-data.component';
+import {AppState} from '../app.store';
+import {ImportDataComponent} from '../import-data.component';
 
 @Injectable()
 export class ToImportDataAction extends Action<AppState> {

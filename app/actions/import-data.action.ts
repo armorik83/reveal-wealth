@@ -1,10 +1,10 @@
 import {Injectable} from 'angular2/core';
 import * as papaparse from 'papaparse';
-import {Action} from './walts-proto';
+import {Action} from '../walts-proto';
 
-import {AppState} from './app.store';
-import {ImportFacade} from './import-facade.service';
-import {MoneyTransactionRepository} from './domain/application/money-transaction/money-transaction-repository.service';
+import {AppState} from '../app.store';
+import {ImportFacade} from '../import-facade.service';
+import {MoneyTransactionRepository} from '../domain/application/money-transaction/money-transaction-repository.service';
 
 type ParseResult = PapaParse.ParseResult;
 type ParseConfig = PapaParse.ParseConfig;

@@ -1,7 +1,7 @@
 import {Injectable} from 'angular2/core';
-import {Action} from './walts-proto';
+import {Action} from '../walts-proto';
 
-import {AppState} from './app.store';
+import {AppState} from '../app.store';
 
 export function fn(st: AppState, n: number): number {
   return n + st.num;

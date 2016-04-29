@@ -1,8 +1,8 @@
 import {Component, ChangeDetectorRef} from 'angular2/core';
 import {RouterView} from './walts-proto';
 
-import {IncrementAction} from './increment.action';
-import {SetCurrentRouteStateAction} from './set-current-route-state.action';
+import {IncrementAction} from './actions/increment.action';
+import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
 
@@ -62,7 +62,11 @@ export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppSto
    * @return void
    */
   onClick(): void {
-    this.Dispatcher.emit(this.IncrementAction.create(3));
+    this.Dispatcher.emit(this.IncrementAction.create(1));
+    this.Dispatcher.emit(this.IncrementAction.create(1));
+    this.Dispatcher.emit(this.IncrementAction.create(1));
+    this.Dispatcher.emit(this.IncrementAction.create(1));
+    this.Dispatcher.emit(this.IncrementAction.create(1));
   }
 
 }

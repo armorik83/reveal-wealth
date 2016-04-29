@@ -1,8 +1,8 @@
 import {Component, ChangeDetectorRef} from 'angular2/core';
 import {RouterView} from './walts-proto';
 
-import {SetCurrentRouteStateAction} from './set-current-route-state.action';
-import {ImportDataAction} from './import-data.action';
+import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
+import {ImportDataAction} from './actions/import-data.action';
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
 import {RouteChanger} from './route-changer.service';

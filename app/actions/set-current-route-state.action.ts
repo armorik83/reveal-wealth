@@ -1,7 +1,7 @@
 import {Injectable} from 'angular2/core';
-import {Action} from './walts-proto';
+import {Action} from '../walts-proto';
 
-import {AppState, RouteState} from './app.store';
+import {AppState, RouteState} from '../app.store';
 
 @Injectable()
 export class SetCurrentRouteStateAction extends Action<AppState> {
