@@ -2,9 +2,10 @@ import {Injectable} from 'angular2/core';
 import Dexie from 'dexie';
 import * as lodash from 'lodash';
 
-import {AbstractRepository} from "../abstract/abstract-repository.service";
+import {AbstractRepository} from '../abstract/abstract-repository.service';
 import {AppDatabase, Relation, Entity} from '../../../app-database.ts';
 import {AppDatabaseProvider} from '../../../app-database-provider.service';
+import {BindableMoneyTransaction} from './bindable-money-transaction';
 
 type DexiePromise<R> = Dexie.Promise<R>;
 
@@ -19,7 +20,7 @@ export class MoneyTransactionRepository extends AbstractRepository {
     this.db           = new AppDatabase();
   }
 
-  async pull(): Promise<any> {
+  async pull(): Promise<BindableMoneyTransaction[]> {
     const moneyTransactionsArray = await this.db.moneyTransactions.toArray();
 
     const joinQueryIds = (() => {
@@ -47,7 +48,7 @@ export class MoneyTransactionRepository extends AbstractRepository {
       return ids;
     })();
 
-    const allMap = await (async (_ids: Relation<number[]>) => {
+    const relationValueMap = await (async (_ids: Relation<number[]>) => {
       let accounts      = [] as DexiePromise<Entity[]>[];
       let categories    = [] as DexiePromise<Entity[]>[];
       let subcategories = [] as DexiePromise<Entity[]>[];
@@ -94,21 +95,7 @@ export class MoneyTransactionRepository extends AbstractRepository {
     })(joinQueryIds);
 
     return moneyTransactionsArray.map((item) => {
-      let obj = {} as any;
-      obj.type           = item.type;
-      obj.date           = item.date;
-      obj.currencyCode   = item.currencyCode;
-      obj.amount         = item.amount;
-      obj.currencyCodeTo = item.currencyCodeTo;
-      obj.amountTo       = item.amountTo;
-      obj.note           = item.note;
-
-      obj.account     = allMap.accounts     .get(item.accountId);
-      obj.category    = allMap.categories   .get(item.categoryId);
-      obj.subcategory = allMap.subcategories.get(item.subcategoryId);
-      obj.payeePayer  = allMap.payeePayers  .get(item.payeePayerId);
-      obj.tag         = allMap.tags         .get(item.tagId);
-      return obj
+      return new BindableMoneyTransaction(item, relationValueMap);
     });
   }
 

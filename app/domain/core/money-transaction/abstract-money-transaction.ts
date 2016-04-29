@@ -17,8 +17,15 @@ export class AbstractMoneyTransaction extends AbstractEntity {
   payeePayerId:  number;
   tagId:         number;
 
+  account:     string;
+  accountTo:   string;
+  category:    string;
+  subcategory: string;
+  payeePayer:  string;
+  tag:         string;
+
   constructor() {
     super();
   }
-  
+
 }

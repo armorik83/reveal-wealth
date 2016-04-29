@@ -5,6 +5,7 @@ import {IncrementAction} from './actions/increment.action';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
+import {BindableMoneyTransaction} from './domain/application/money-transaction/bindable-money-transaction';
 
 @Component({
   selector : 'rw-transactions',
@@ -29,7 +30,7 @@ export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppSto
   /* it has the string literal type */
   static routeName: 'MoneyTransactionsComponent' = 'MoneyTransactionsComponent';
 
-  private moneyTransactions: any[] = [];
+  private moneyTransactions: BindableMoneyTransaction[] = [];
 
   constructor(protected cdRef: ChangeDetectorRef,
               protected Dispatcher: AppDispatcher,
@@ -55,7 +56,7 @@ export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppSto
    */
   wlOnComplete(st: AppState): void {
     console.log(st);
-    this.moneyTransactions = st.json;
+    this.moneyTransactions = st.moneyTransactions;
   }
 
   /**

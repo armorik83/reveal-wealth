@@ -4,7 +4,7 @@ export class AbstractRepository {
     //
   }
 
-  async pull(): Promise<any> {
+  async pull(): Promise<any[]> {
     return Promise.resolve(null);
   }
 
