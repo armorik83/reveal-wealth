@@ -13,11 +13,11 @@ export class ToImportDataAction extends Action<AppState> {
   }
 
   create(): this {
-    this.createReducer((st: AppState) => {
-      st.routeState = routeNames.ImportDataComponent;
+    this.createReducer((curr: AppState, next: AppState) => {
+      next.routeState = routeNames.ImportDataComponent;
       return new Promise(async (resolve) => {
-        await this.Router.navigate([st.routeState]);
-        resolve(st);
+        await this.Router.navigate([next.routeState]);
+        resolve(next);
       });
     });
     return this;

@@ -1,33 +1,14 @@
-import {
-  OnInit,
-  OnChanges,
-  DoCheck,
-  OnDestroy,
-  AfterContentInit,
-  AfterContentChecked,
-  AfterViewInit,
-  AfterViewChecked,
-  SimpleChange,
-  ChangeDetectorRef,
-} from 'angular2/core';
+import {SimpleChange, ChangeDetectorRef} from 'angular2/core';
 import {Dispatcher} from './dispatcher';
 import {Store, State} from './store';
 
-export interface OnComplete<STT extends State> {
-  wlOnComplete(st: STT): void;
+export interface StoreHasChanged<STT extends State> {
+  wtStoreHasChanged(st: STT): void;
 }
 
-export class AbstractComponent implements
-  OnInit,
-  OnChanges,
-  DoCheck,
-  OnDestroy,
-  AfterContentInit,
-  AfterContentChecked,
-  AfterViewInit,
-  AfterViewChecked {
+export class AbstractComponent {
 
-  protected wlDisposers: Function[] = [];
+  protected wtDisposers: Function[] = [];
 
   ngOnInit(): any {
     // noop
@@ -42,7 +23,7 @@ export class AbstractComponent implements
   }
 
   ngOnDestroy(): any {
-    this.wlDisposers.forEach((disposer) => disposer());
+    this.wtDisposers.forEach((disposer) => disposer());
   }
 
   ngAfterContentInit(): any {
@@ -67,7 +48,7 @@ export class View<
   D extends Dispatcher<STT>,
   STR extends Store<STT>,
   STT extends State
-  > extends AbstractComponent implements OnComplete<STT> {
+  > extends AbstractComponent implements StoreHasChanged<STT> {
 
   constructor(protected cdRef: ChangeDetectorRef,
               protected Dispatcher: D,
@@ -80,9 +61,9 @@ export class View<
 
     const disposer = this.Store.onComplete(
       this.cdRef,
-      this.wlOnComplete.bind(this)
+      this.wtStoreHasChanged.bind(this)
     );
-    this.wlDisposers.push(disposer);
+    this.wtDisposers.push(disposer);
   }
 
   ngOnChanges(changes: {[key: string]: SimpleChange}): any {
@@ -113,7 +94,7 @@ export class View<
     super.ngAfterViewChecked();
   }
 
-  wlOnComplete(st: STT): void {
+  wtStoreHasChanged(st: STT): void {
     // noop
   }
 
@@ -123,7 +104,7 @@ export class RouterView<
   D extends Dispatcher<STT>,
   STR extends Store<STT>,
   STT extends State
-  > extends AbstractComponent implements OnComplete<STT> {
+  > extends AbstractComponent implements StoreHasChanged<STT> {
 
   constructor(protected cdRef: ChangeDetectorRef,
               protected Dispatcher: D,
@@ -136,9 +117,9 @@ export class RouterView<
 
     const disposer = this.Store.onComplete(
       this.cdRef,
-      this.wlOnComplete.bind(this)
+      this.wtStoreHasChanged.bind(this)
     );
-    this.wlDisposers.push(disposer);
+    this.wtDisposers.push(disposer);
   }
 
   ngOnChanges(changes: {[key: string]: SimpleChange}): any {
@@ -169,7 +150,7 @@ export class RouterView<
     super.ngOnDestroy();
   }
 
-  wlOnComplete(st: STT): any {
+  wtStoreHasChanged(st: STT): any {
     // noop
   }
 

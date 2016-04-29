@@ -4,6 +4,7 @@ import {RouterView} from './walts-proto';
 import {routeNames} from './app-router-definition';
 import {IncrementAction} from './actions/increment.action';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
+import {InitMoneyTransactionsAction} from './actions/init-money-transactions.action';
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
 import {BindableMoneyTransaction} from './domain/application/money-transaction/bindable-money-transaction';
@@ -13,6 +14,7 @@ import {RouteChanger} from './route-changer.service';
   selector : 'rw-money-transactions',
   providers: [
     SetCurrentRouteStateAction,
+    InitMoneyTransactionsAction,
     IncrementAction
   ],
   template : `
@@ -23,8 +25,11 @@ import {RouteChanger} from './route-changer.service';
         (click)="onClickEntity(moneyTransaction)"
       >
         <span>{{moneyTransaction.type}}</span>
-        <span>{{moneyTransaction.account}}</span>
         <span>{{moneyTransaction.date}}</span>
+        <span>{{moneyTransaction.account}}</span>
+        <span>{{moneyTransaction.amount}}</span>
+        <span>{{moneyTransaction.category}}</span>
+        <span>{{moneyTransaction.subcategory}}</span>
         <span>{{moneyTransaction.note}}</span>
       </li>
     </ul>
@@ -39,6 +44,7 @@ export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppSto
               protected Store: AppStore,
               private RouteChanger: RouteChanger,
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
+              private InitMoneyTransactionsAction: InitMoneyTransactionsAction,
               private IncrementAction: IncrementAction) {
     super(cdRef, Dispatcher, Store);
   }
@@ -52,24 +58,21 @@ export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppSto
     this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
       routeNames.MoneyTransactionsComponent
     ));
+    this.Dispatcher.emit(this.InitMoneyTransactionsAction.create());
   }
 
   /**
-   * @param st
+   * @param curr - currentState
    */
-  wlOnComplete(st: AppState): void {
-    console.log(st);
-    this.moneyTransactions = st.moneyTransactions;
+  wtStoreHasChanged(curr: AppState): void {
+    console.log(curr);
+    this.moneyTransactions = curr.moneyTransactions;
   }
 
   /**
    * @return void
    */
   onClick(): void {
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
     this.Dispatcher.emit(this.IncrementAction.create(1));
   }
 

@@ -8,9 +8,9 @@ import {AppState} from '../app.store';
 export class SetCurrentRouteStateAction extends Action<AppState> {
 
   create(routeState: RouteState): this {
-    this.createReducer((st: AppState) => {
-      st.routeState = routeState;
-      return Promise.resolve(st);
+    this.createReducer((curr: AppState, next: AppState) => {
+      next.routeState = routeState;
+      return Promise.resolve(next);
     });
     return this;
   }
