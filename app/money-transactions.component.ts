@@ -23,8 +23,11 @@ import {RouteChanger} from './route-changer.service';
         (click)="onClickEntity(moneyTransaction)"
       >
         <span>{{moneyTransaction.type}}</span>
-        <span>{{moneyTransaction.account}}</span>
         <span>{{moneyTransaction.date}}</span>
+        <span>{{moneyTransaction.account}}</span>
+        <span>{{moneyTransaction.amount}}</span>
+        <span>{{moneyTransaction.category}}</span>
+        <span>{{moneyTransaction.subcategory}}</span>
         <span>{{moneyTransaction.note}}</span>
       </li>
     </ul>
@@ -66,10 +69,6 @@ export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppSto
    * @return void
    */
   onClick(): void {
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
     this.Dispatcher.emit(this.IncrementAction.create(1));
   }
 

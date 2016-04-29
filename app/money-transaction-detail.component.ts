@@ -17,8 +17,11 @@ import {BindableMoneyTransaction} from './domain/application/money-transaction/b
   template : `
     <div *ngIf="!!moneyTransaction">
       <span>{{moneyTransaction.type}}</span>
-      <span>{{moneyTransaction.account}}</span>
       <span>{{moneyTransaction.date}}</span>
+      <span>{{moneyTransaction.account}}</span>
+      <span>{{moneyTransaction.amount}}</span>
+      <span>{{moneyTransaction.category}}</span>
+      <span>{{moneyTransaction.subcategory}}</span>
       <span>{{moneyTransaction.note}}</span>
     </div>
   `
