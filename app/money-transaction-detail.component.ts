@@ -49,11 +49,11 @@ export class MoneyTransactionDetailComponent extends RouterView<AppDispatcher, A
   }
 
   /**
-   * @param st
+   * @param curr - currentState
    */
-  wlOnComplete(st: AppState): void {
-    console.log(st);
-    this.moneyTransaction = st.moneyTransaction;
+  wtStoreHasChanged(curr: AppState): void {
+    console.log(curr);
+    this.moneyTransaction = curr.moneyTransaction;
   }
 
 }

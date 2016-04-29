@@ -3,17 +3,17 @@ import {Action} from '../walts-proto';
 
 import {AppState} from '../app.store';
 
-export function fn(st: AppState, n: number): number {
-  return n + st.num;
+export function fn(curr: AppState, n: number): number {
+  return n + curr.num;
 }
 
 @Injectable()
 export class IncrementAction extends Action<AppState> {
 
   create(n: number): this {
-    this.createReducer((st: AppState) => {
-      st.num = fn(st, n);
-      return Promise.resolve(st);
+    this.createReducer((curr: AppState, next: AppState) => {
+      next.num = fn(curr, n);
+      return Promise.resolve(next);
     });
     return this;
   }

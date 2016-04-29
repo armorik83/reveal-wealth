@@ -16,12 +16,12 @@ export class ToMoneyTransactionDetailAction extends Action<AppState> {
   }
 
   create(entity: BindableMoneyTransaction): this {
-    this.createReducer(async (st: AppState) => {
-      st.routeState       = routeNames.MoneyTransactionDetailComponent;
-      st.moneyTransaction = await this.MoneyTransactionRepository.pull(entity.id);
+    this.createReducer(async (curr: AppState, next: AppState) => {
+      next.routeState       = routeNames.MoneyTransactionDetailComponent;
+      next.moneyTransaction = await this.MoneyTransactionRepository.pull(entity.id);
       return new Promise(async (resolve) => {
-        await this.Router.navigate([st.routeState, {id: entity.id.value}]);
-        resolve(st);
+        await this.Router.navigate([next.routeState, {id: entity.id.value}]);
+        resolve(next);
       });
     });
     return this;

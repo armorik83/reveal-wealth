@@ -83,10 +83,10 @@ export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, App
   }
 
   /**
-   * @param st
+   * @param curr - currentState
    */
-  wlOnComplete(st: AppState): void {
-    console.log(st);
+  wtStoreHasChanged(curr: AppState): void {
+    console.log(curr);
   }
 
 }

@@ -32,9 +32,9 @@ export class ImportDataAction extends Action<AppState> {
   }
 
   create(csv: string): this {
-    this.createReducer(async (st: AppState) => {
-      st.moneyTransactions = await fn(this.ImportFacade, csv);
-      return Promise.resolve(st);
+    this.createReducer(async (curr: AppState, next: AppState) => {
+      next.moneyTransactions = await fn(this.ImportFacade, csv);
+      return Promise.resolve(next);
     });
     return this;
   }
