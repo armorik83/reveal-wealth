@@ -4,7 +4,7 @@ import {Action} from './walts-proto';
 
 import {AppState} from './app.store';
 import {ImportFacade} from './import-facade.service';
-import {MoneyTransactionRepository} from './money-transaction-repository.service';
+import {MoneyTransactionRepository} from './domain/application/money-transaction/money-transaction-repository.service';
 
 type ParseResult = PapaParse.ParseResult;
 type ParseConfig = PapaParse.ParseConfig;

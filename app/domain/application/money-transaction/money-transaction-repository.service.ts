@@ -2,17 +2,19 @@ import {Injectable} from 'angular2/core';
 import Dexie from 'dexie';
 import * as lodash from 'lodash';
 
-import {AppDatabase, Relation, Entity} from './app-database.ts';
-import {AppDatabaseProvider} from './app-database-provider.service';
+import {AbstractRepository} from "../abstract/abstract-repository.service";
+import {AppDatabase, Relation, Entity} from '../../../app-database.ts';
+import {AppDatabaseProvider} from '../../../app-database-provider.service';
 
 type DexiePromise<R> = Dexie.Promise<R>;
 
 @Injectable()
-export class MoneyTransactionRepository {
+export class MoneyTransactionRepository extends AbstractRepository {
 
   private db: AppDatabase;
 
   constructor(AppDatabaseProvider: AppDatabaseProvider) {
+    super();
     const AppDatabase = AppDatabaseProvider.getConstructor();
     this.db           = new AppDatabase();
   }
