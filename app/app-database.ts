@@ -4,7 +4,7 @@ import {APP_NAME} from './constants';
 
 type Table<T, Key> = Dexie.Table<T, Key>;
 
-interface Entity {
+export interface Entity {
   id?: number;
   name: string;
 }
@@ -43,6 +43,14 @@ interface PayeePayer extends Entity {
 
 interface Tag extends Entity {
   //
+}
+
+export interface Relation<T> {
+  accounts:      T;
+  categories:    T;
+  subcategories: T;
+  payeePayers:   T;
+  tags:          T;
 }
 
 export class AppDatabase extends Dexie {

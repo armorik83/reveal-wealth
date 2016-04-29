@@ -16,9 +16,10 @@ import {AppStore, AppState} from './app.store';
     <button (click)="onClick()">increment</button>
     <ul>
       <li *ngFor="#moneyTransaction of moneyTransactions">
-        <span>{{moneyTransaction.Type}}</span>
-        <span>{{moneyTransaction.Date}}</span>
-        <span>{{moneyTransaction.Note}}</span>
+        <span>{{moneyTransaction.type}}</span>
+        <span>{{moneyTransaction.account}}</span>
+        <span>{{moneyTransaction.date}}</span>
+        <span>{{moneyTransaction.note}}</span>
       </li>
     </ul>
   `
@@ -53,6 +54,7 @@ export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppSto
    * @param st
    */
   wlOnComplete(st: AppState): void {
+    console.log(st);
     this.moneyTransactions = st.json;
   }
 

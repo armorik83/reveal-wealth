@@ -1,15 +1,8 @@
 import {Injectable} from 'angular2/core';
+import * as lodash from 'lodash';
 
 import {AppDatabaseProvider} from './app-database-provider.service';
-import {AppDatabase} from './app-database';
-
-interface UniqueValues {
-  accounts:      string[];
-  categories:    string[];
-  subcategories: string[];
-  payeePayers:   string[];
-  tags:          string[];
-}
+import {AppDatabase, Relation} from './app-database';
 
 @Injectable()
 export class ImportFacade {
@@ -25,14 +18,14 @@ export class ImportFacade {
     this.db.initialize();
 
     // For five of the sub-entity to eliminate duplicate.
-    const uniqueValues = await (async (): Promise<UniqueValues> => {
+    const uniqueValues = await (async (): Promise<Relation<string[]>> => {
       let allValues = {
-        accounts     : [] as string[],
-        categories   : [] as string[],
-        subcategories: [] as string[],
-        payeePayers  : [] as string[],
-        tags         : [] as string[],
-      };
+        accounts     : [],
+        categories   : [],
+        subcategories: [],
+        payeePayers  : [],
+        tags         : []
+      } as Relation<string[]>;
       importedResult.forEach((item) => {
         allValues.accounts     .push(item['Account']);
         allValues.accounts     .push(item['AccountTo']);
@@ -42,20 +35,17 @@ export class ImportFacade {
         allValues.tags         .push(item['Tag']);
       });
 
-      const uniqueFilter = (v: string, i: number, self: string[]) => {
-        return !!v && self.indexOf(v) === i;
-      };
       return {
-        accounts     : allValues.accounts     .filter(uniqueFilter),
-        categories   : allValues.categories   .filter(uniqueFilter),
-        subcategories: allValues.subcategories.filter(uniqueFilter),
-        payeePayers  : allValues.payeePayers  .filter(uniqueFilter),
-        tags         : allValues.tags         .filter(uniqueFilter)
+        accounts     : lodash.chain(allValues.accounts)     .uniq().value(),
+        categories   : lodash.chain(allValues.categories)   .uniq().value(),
+        subcategories: lodash.chain(allValues.subcategories).uniq().value(),
+        payeePayers  : lodash.chain(allValues.payeePayers)  .uniq().value(),
+        tags         : lodash.chain(allValues.tags)         .uniq().value()
       };
     })();
 
     // It adds the entity name that has been the removal of duplication in a database.
-    await (async (_uniqueValues: UniqueValues) => {
+    await (async (_uniqueValues: Relation<string[]>) => {
       const tables = [
         this.db.accounts,
         this.db.categories,
@@ -75,18 +65,18 @@ export class ImportFacade {
     // To retain the id of the added entity to the database as a object map.
     const idMap = await (async () => {
       let _idMap = {
-        accounts     : {} as {[name: string]: number},
-        categories   : {} as {[name: string]: number},
-        subcategories: {} as {[name: string]: number},
-        payeePayers  : {} as {[name: string]: number},
-        tags         : {} as {[name: string]: number}
-      };
+        accounts     : new Map(),
+        categories   : new Map(),
+        subcategories: new Map(),
+        payeePayers  : new Map(),
+        tags         : new Map()
+      } as Relation<Map<string, number>>;
       const promises = [
-        this.db.accounts     .each((item) => _idMap.accounts[item.name]      = item.id),
-        this.db.categories   .each((item) => _idMap.categories[item.name]    = item.id),
-        this.db.subcategories.each((item) => _idMap.subcategories[item.name] = item.id),
-        this.db.payeePayers  .each((item) => _idMap.payeePayers[item.name]   = item.id),
-        this.db.tags         .each((item) => _idMap.tags[item.name]          = item.id)
+        this.db.accounts     .each((item) => _idMap.accounts     .set(item.name, item.id)),
+        this.db.categories   .each((item) => _idMap.categories   .set(item.name, item.id)),
+        this.db.subcategories.each((item) => _idMap.subcategories.set(item.name, item.id)),
+        this.db.payeePayers  .each((item) => _idMap.payeePayers  .set(item.name, item.id)),
+        this.db.tags         .each((item) => _idMap.tags         .set(item.name, item.id))
       ];
       await Promise.all(promises);
       return _idMap;
@@ -98,17 +88,17 @@ export class ImportFacade {
         this.db.moneyTransactions.add(<any>{
           'type'          : item['Type'],
           'date'          : item['Date'],
-          'accountId'     : idMap.accounts[item['Account']],
           'currencyCode'  : item['CurrencyCode'],
           'amount'        : item['Amount'],
-          'accountToId'   : idMap.accounts[item['Account']],
           'currencyCodeTo': item['CurrencyCodeTo'],
           'amountTo'      : item['AmountTo'],
-          'categoryId'    : idMap.categories[item['Category']],
-          'subcategoryId' : idMap.subcategories[item['Subcategory']],
-          'payeePayerId'  : idMap.payeePayers[item['Payee/Payer']],
-          'tagId'         : idMap.tags[item['Tag']],
-          'note'          : item['Note']
+          'note'          : item['Note'],
+          'accountId'     : idMap.accounts     .get(item['Account']),
+          'accountToId'   : idMap.accounts     .get(item['AccountTo']),
+          'categoryId'    : idMap.categories   .get(item['Category']),
+          'subcategoryId' : idMap.subcategories.get(item['Subcategory']),
+          'payeePayerId'  : idMap.payeePayers  .get(item['Payee/Payer']),
+          'tagId'         : idMap.tags         .get(item['Tag']),
         });
       });
     });
