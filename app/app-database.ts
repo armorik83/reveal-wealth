@@ -1,28 +1,15 @@
 import Dexie from 'dexie';
 
 import {APP_NAME} from './constants';
+import {PrePersistMoneyTransaction} from './domain/core/money-transaction/pre-persist-money-transaction copy';
+import {MoneyTransaction} from './domain/core/money-transaction/money-transaction';
 
 type Table<T, Key> = Dexie.Table<T, Key>;
+type DexiePromise<R> = Dexie.Promise<R>;
 
 export interface Entity {
   id?: number;
   name: string;
-}
-
-interface MoneyTransaction extends Entity {
-  type: string;
-  date: string;
-  accountId: number;
-  currencyCode: string;
-  amount: number;
-  accountToId: number;
-  currencyCodeTo: string;
-  amountTo: number;
-  categoryId: number;
-  subcategoryId: number;
-  payeePayerId: number;
-  tagId: number;
-  note: string;
 }
 
 interface Account extends Entity {
@@ -55,7 +42,7 @@ export interface Relation<T> {
 
 export class AppDatabase extends Dexie {
 
-  moneyTransactions: Table<MoneyTransaction, number>;
+  moneyTransactions: Table<MoneyTransaction | PrePersistMoneyTransaction, number>;
   accounts: Table<Account, number>;
   categories: Table<Category, number>;
   subcategories: Table<Subcategory, number>;
@@ -72,24 +59,21 @@ export class AppDatabase extends Dexie {
     indexedDB.deleteDatabase(APP_NAME);
   }
 
+  addMoneyTransaction(entity: PrePersistMoneyTransaction): DexiePromise<number> {
+    return this.moneyTransactions.add(entity);
+  }
+
+  addMoneyTransactions(items: any[], relationIdMap: Relation<Map<string, number>>): DexiePromise<any> {
+    return this.transaction('rw', this.moneyTransactions, () => {
+      items.forEach((item) => {
+        this.addMoneyTransaction(new PrePersistMoneyTransaction(item, relationIdMap));
+      });
+    });
+  }
+
   private defineScheme(): void {
     this.version(1).stores({
-      moneyTransactions: [
-        '++id',
-        'type',
-        'date',
-        'accountId',
-        'currencyCode',
-        'amount',
-        'accountToId',
-        'currencyCodeTo',
-        'amountTo',
-        'categoryId',
-        'subcategoryId',
-        'payeePayerId',
-        'tagId',
-        'note'
-      ].join(','),
+      moneyTransactions: MoneyTransaction.schema,
       accounts     : '++id, &name',
       categories   : '++id, &name',
       subcategories: '++id, &name',

@@ -3,18 +3,26 @@ import * as lodash from 'lodash';
 
 import {AppDatabaseProvider} from './app-database-provider.service';
 import {AppDatabase, Relation} from './app-database';
+import {MoneyTransactionRepository} from './domain/application/money-transaction/money-transaction-repository.service';
 
 @Injectable()
 export class ImportFacade {
 
   private db: AppDatabase;
 
-  constructor(AppDatabaseProvider: AppDatabaseProvider) {
+  constructor(AppDatabaseProvider: AppDatabaseProvider,
+              private MoneyTransactionRepository: MoneyTransactionRepository) {
     const AppDatabase = AppDatabaseProvider.getConstructor();
     this.db           = new AppDatabase();
   }
 
-  async normalize(importedResult: any[]): Promise<any> {
+  async importToDb(importedCsv: any[]): Promise<MoneyTransactionRepository> {
+    const idMap = await this.normalize(importedCsv);
+    await this.db.addMoneyTransactions(importedCsv, idMap);
+    return this.MoneyTransactionRepository;
+  }
+
+  private async normalize(importedCsv: any[]): Promise<Relation<Map<string, number>>> {
     this.db.initialize();
 
     // For five of the sub-entity to eliminate duplicate.
@@ -26,7 +34,7 @@ export class ImportFacade {
         payeePayers  : [],
         tags         : []
       } as Relation<string[]>;
-      importedResult.forEach((item) => {
+      importedCsv.forEach((item) => {
         allValues.accounts     .push(item['Account']);
         allValues.accounts     .push(item['AccountTo']);
         allValues.categories   .push(item['Category']);
@@ -82,26 +90,7 @@ export class ImportFacade {
       return _idMap;
     })();
 
-    // It will persist main entity in the database.
-    return await this.db.transaction('rw', this.db.moneyTransactions, () => {
-      importedResult.forEach((item) => {
-        this.db.moneyTransactions.add(<any>{
-          'type'          : item['Type'],
-          'date'          : item['Date'],
-          'currencyCode'  : item['CurrencyCode'],
-          'amount'        : item['Amount'],
-          'currencyCodeTo': item['CurrencyCodeTo'],
-          'amountTo'      : item['AmountTo'],
-          'note'          : item['Note'],
-          'accountId'     : idMap.accounts     .get(item['Account']),
-          'accountToId'   : idMap.accounts     .get(item['AccountTo']),
-          'categoryId'    : idMap.categories   .get(item['Category']),
-          'subcategoryId' : idMap.subcategories.get(item['Subcategory']),
-          'payeePayerId'  : idMap.payeePayers  .get(item['Payee/Payer']),
-          'tagId'         : idMap.tags         .get(item['Tag']),
-        });
-      });
-    });
+    return idMap;
   }
 
 }
