@@ -2,10 +2,10 @@ import {Injectable} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {Action} from '../walts-proto';
 
+import {routeNames} from '../app-router-definition';
 import {AppState} from '../app.store';
 import {MoneyTransactionRepository} from '../domain/application/money-transaction/money-transaction-repository.service';
-import {MoneyTransactionDetailComponent} from '../money-transaction-detail.component';
-import {MoneyTransactionId} from '../domain/core/money-transaction/money-transaction-id';
+import {BindableMoneyTransaction} from '../domain/application/money-transaction/bindable-money-transaction';
 
 @Injectable()
 export class ToMoneyTransactionDetailAction extends Action<AppState> {
@@ -15,12 +15,12 @@ export class ToMoneyTransactionDetailAction extends Action<AppState> {
     super();
   }
 
-  create(id: MoneyTransactionId): this {
+  create(entity: BindableMoneyTransaction): this {
     this.createReducer(async (st: AppState) => {
-      st.routeState       = MoneyTransactionDetailComponent.routeName;
-      st.moneyTransaction = await this.MoneyTransactionRepository.pull(id);
+      st.routeState       = routeNames.MoneyTransactionDetailComponent;
+      st.moneyTransaction = await this.MoneyTransactionRepository.pull(entity.id);
       return new Promise(async (resolve) => {
-        await this.Router.navigate([st.routeState, {id: id.value}]);
+        await this.Router.navigate([st.routeState, {id: entity.id.value}]);
         resolve(st);
       });
     });

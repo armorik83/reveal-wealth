@@ -3,12 +3,7 @@ import {State, Store} from './walts-proto';
 
 import {AppDispatcher} from './app.dispatcher';
 import {BindableMoneyTransaction} from './domain/application/money-transaction/bindable-money-transaction';
-
-export type RouteState =
-  'MoneyTransactionsComponent' |
-  'MoneyTransactionDetailComponent' |
-  'ImportDataComponent' |
-  'n/a';
+import {RouteState} from './app-router-definition';
 
 export class AppState extends State {
   routeState:        RouteState;

@@ -1,10 +1,14 @@
 import {AbstractMoneyTransaction} from '../../core/money-transaction/abstract-money-transaction';
+import {MoneyTransactionId} from '../../core/money-transaction/money-transaction-id';
 import {Relation} from '../../../app-database';
 
 export class BindableMoneyTransaction extends AbstractMoneyTransaction {
 
+  id: MoneyTransactionId;
+
   constructor(item: any, relationValueMap: Relation<Map<number, string>>) {
     super();
+    this.id             = new MoneyTransactionId(item.id);
     this.type           = item.type;
     this.date           = item.date;
     this.currencyCode   = item.currencyCode;

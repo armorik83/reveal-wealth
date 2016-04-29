@@ -1,14 +1,13 @@
 import {Component, ChangeDetectorRef} from 'angular2/core';
 import {RouterView} from './walts-proto';
 
+import {routeNames} from './app-router-definition';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {ImportDataAction} from './actions/import-data.action';
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
 import {RouteChanger} from './route-changer.service';
-
 import {InputFileDirective} from './input-file.directive';
-import {MoneyTransactionRepository} from './domain/application/money-transaction/money-transaction-repository.service';
 import {ImportFacade} from './import-facade.service';
 
 @Component({
@@ -17,8 +16,7 @@ import {ImportFacade} from './import-facade.service';
   providers : [
     SetCurrentRouteStateAction,
     ImportDataAction,
-    ImportFacade,
-    MoneyTransactionRepository
+    ImportFacade
   ],
   template  : `
     <input
@@ -35,9 +33,6 @@ import {ImportFacade} from './import-facade.service';
   `
 })
 export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, AppState> {
-
-  /* it has the string literal type */
-  static routeName: 'ImportDataComponent' = 'ImportDataComponent';
 
   importedCsv: string;
   disableImport: boolean;
@@ -61,7 +56,7 @@ export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, App
     super.ngOnInit();
 
     this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
-      ImportDataComponent.routeName
+      routeNames.ImportDataComponent
     ));
   }
 
@@ -74,7 +69,7 @@ export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, App
     }
 
     this.Dispatcher.emit(this.ImportDataAction.create(this.importedCsv));
-    this.RouteChanger.toTransactions();
+    this.RouteChanger.toMoneyTransactions();
   }
 
   /**
@@ -85,6 +80,13 @@ export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, App
 
     // If it has a no result, button will be disabled.
     this.disableImport = !result;
+  }
+
+  /**
+   * @param st
+   */
+  wlOnComplete(st: AppState): void {
+    console.log(st);
   }
 
 }

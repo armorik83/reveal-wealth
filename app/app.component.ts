@@ -2,6 +2,7 @@ import {Component, ChangeDetectorRef} from 'angular2/core';
 import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from 'angular2/router';
 import {View} from './walts-proto';
 
+import {routeNames} from './app-router-definition';
 import {MoneyTransactionsComponent} from './money-transactions.component';
 import {MoneyTransactionDetailComponent} from './money-transaction-detail.component';
 import {ImportDataComponent} from './import-data.component';
@@ -39,17 +40,17 @@ import {MoneyTransactionRepository} from './domain/application/money-transaction
   {
     useAsDefault: true,
     path        : '/money-transactions',
-    name        : MoneyTransactionsComponent.routeName,
+    name        : routeNames.MoneyTransactionsComponent,
     component   : MoneyTransactionsComponent
   },
   {
     path        : '/money-transaction-detail/:id',
-    name        : MoneyTransactionDetailComponent.routeName,
+    name        : routeNames.MoneyTransactionDetailComponent,
     component   : MoneyTransactionDetailComponent
   },
   {
     path        : '/import',
-    name        : ImportDataComponent.routeName,
+    name        : routeNames.ImportDataComponent,
     component   : ImportDataComponent
   }
 ])

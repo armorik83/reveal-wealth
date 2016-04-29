@@ -1,6 +1,7 @@
 import {Component, ChangeDetectorRef} from 'angular2/core';
 import {RouterView} from './walts-proto';
 
+import {routeNames} from './app-router-definition';
 import {IncrementAction} from './actions/increment.action';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {AppDispatcher} from './app.dispatcher';
@@ -14,16 +15,15 @@ import {BindableMoneyTransaction} from './domain/application/money-transaction/b
     IncrementAction
   ],
   template : `
-    <span>{{moneyTransaction.type}}</span>
-    <span>{{moneyTransaction.account}}</span>
-    <span>{{moneyTransaction.date}}</span>
-    <span>{{moneyTransaction.note}}</span>
+    <div *ngIf="!!moneyTransaction">
+      <span>{{moneyTransaction.type}}</span>
+      <span>{{moneyTransaction.account}}</span>
+      <span>{{moneyTransaction.date}}</span>
+      <span>{{moneyTransaction.note}}</span>
+    </div>
   `
 })
 export class MoneyTransactionDetailComponent extends RouterView<AppDispatcher, AppStore, AppState> {
-
-  /* it has the string literal type */
-  static routeName: 'MoneyTransactionDetailComponent' = 'MoneyTransactionDetailComponent';
 
   private moneyTransaction: BindableMoneyTransaction = null;
 
@@ -41,7 +41,7 @@ export class MoneyTransactionDetailComponent extends RouterView<AppDispatcher, A
     super.ngOnInit();
 
     this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
-      MoneyTransactionDetailComponent.routeName
+      routeNames.MoneyTransactionDetailComponent
     ));
   }
 

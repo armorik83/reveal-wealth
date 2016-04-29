@@ -19,7 +19,7 @@ export class NavComponent extends AbstractComponent {
   }
 
   onClickTransactions(): void {
-    this.RouteChanger.toTransactions();
+    this.RouteChanger.toMoneyTransactions();
   }
 
   onClickImportData(): void {
