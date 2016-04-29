@@ -6,6 +6,7 @@ import {BindableMoneyTransaction} from './domain/application/money-transaction/b
 
 export type RouteState =
   'MoneyTransactionsComponent' |
+  'MoneyTransactionDetailComponent' |
   'ImportDataComponent' |
   'n/a';
 
@@ -13,12 +14,14 @@ export class AppState extends State {
   routeState:        RouteState;
   num:               number;
   moneyTransactions: BindableMoneyTransaction[];
+  moneyTransaction:  BindableMoneyTransaction;
 }
 
 const INIT_STATE: AppState = {
   routeState       : 'n/a',
   num              : 0,
-  moneyTransactions: []
+  moneyTransactions: [],
+  moneyTransaction : null
 };
 
 @Injectable()

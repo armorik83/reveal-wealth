@@ -6,9 +6,10 @@ import {SetCurrentRouteStateAction} from './actions/set-current-route-state.acti
 import {AppDispatcher} from './app.dispatcher';
 import {AppStore, AppState} from './app.store';
 import {BindableMoneyTransaction} from './domain/application/money-transaction/bindable-money-transaction';
+import {RouteChanger} from './route-changer.service';
 
 @Component({
-  selector : 'rw-transactions',
+  selector : 'rw-money-transactions',
   providers: [
     SetCurrentRouteStateAction,
     IncrementAction
@@ -16,7 +17,10 @@ import {BindableMoneyTransaction} from './domain/application/money-transaction/b
   template : `
     <button (click)="onClick()">increment</button>
     <ul>
-      <li *ngFor="#moneyTransaction of moneyTransactions">
+      <li
+        *ngFor="#moneyTransaction of moneyTransactions"
+        (click)="onClickEntity()"
+      >
         <span>{{moneyTransaction.type}}</span>
         <span>{{moneyTransaction.account}}</span>
         <span>{{moneyTransaction.date}}</span>
@@ -35,6 +39,7 @@ export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppSto
   constructor(protected cdRef: ChangeDetectorRef,
               protected Dispatcher: AppDispatcher,
               protected Store: AppStore,
+              private RouteChanger: RouteChanger,
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private IncrementAction: IncrementAction) {
     super(cdRef, Dispatcher, Store);
@@ -68,6 +73,13 @@ export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppSto
     this.Dispatcher.emit(this.IncrementAction.create(1));
     this.Dispatcher.emit(this.IncrementAction.create(1));
     this.Dispatcher.emit(this.IncrementAction.create(1));
+  }
+
+  /**
+   * @return void
+   */
+  onClickEntity(): void {
+    this.RouteChanger.toMoneyTransactionDetail(null);
   }
 
 }

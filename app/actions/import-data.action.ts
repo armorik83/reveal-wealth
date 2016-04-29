@@ -14,7 +14,7 @@ export function fn(ImportFacade: ImportFacade,
   return new Promise<BindableMoneyTransaction[]>((resolve) => {
     const onComplete = async (results: ParseResult) => {
       const repository = await ImportFacade.importToDb(results.data);
-      resolve(await repository.pull());
+      resolve(await repository.pullAll());
     };
 
     papaparse.parse(csv, {

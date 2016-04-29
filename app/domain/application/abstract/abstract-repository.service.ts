@@ -1,11 +1,11 @@
-export class AbstractRepository {
+export abstract class AbstractRepository<T> {
 
   constructor() {
     //
   }
 
-  async pull(): Promise<any[]> {
-    return Promise.resolve(null);
-  }
+  abstract pull(id: T): Promise<any>;
+
+  abstract pullAll(): Promise<any[]>;
 
 }

@@ -3,6 +3,7 @@ import Dexie from 'dexie';
 import {APP_NAME} from './constants';
 import {PrePersistMoneyTransaction} from './domain/core/money-transaction/pre-persist-money-transaction copy';
 import {MoneyTransaction} from './domain/core/money-transaction/money-transaction';
+import {MoneyTransactionId} from './domain/core/money-transaction/money-transaction-id';
 
 type Table<T, Key> = Dexie.Table<T, Key>;
 type DexiePromise<R> = Dexie.Promise<R>;
@@ -69,6 +70,18 @@ export class AppDatabase extends Dexie {
         this.addMoneyTransaction(new PrePersistMoneyTransaction(item, relationIdMap));
       });
     });
+  }
+
+  async getMoneyTransaction(id: MoneyTransactionId): Promise<MoneyTransaction[]> {
+    return await this.moneyTransactions
+      .where('id')
+      .equals(id.value)
+      .toArray() as MoneyTransaction[];
+  }
+
+  async getAllMoneyTransactions(): Promise<MoneyTransaction[]> {
+    return await this.moneyTransactions
+      .toArray() as MoneyTransaction[];
   }
 
   private defineScheme(): void {

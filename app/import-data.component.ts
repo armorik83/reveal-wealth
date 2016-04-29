@@ -8,7 +8,6 @@ import {AppStore, AppState} from './app.store';
 import {RouteChanger} from './route-changer.service';
 
 import {InputFileDirective} from './input-file.directive';
-import {MoneyTransactionRepository} from './domain/application/money-transaction/money-transaction-repository.service';
 import {ImportFacade} from './import-facade.service';
 
 @Component({
@@ -17,8 +16,7 @@ import {ImportFacade} from './import-facade.service';
   providers : [
     SetCurrentRouteStateAction,
     ImportDataAction,
-    ImportFacade,
-    MoneyTransactionRepository
+    ImportFacade
   ],
   template  : `
     <input
@@ -74,7 +72,7 @@ export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, App
     }
 
     this.Dispatcher.emit(this.ImportDataAction.create(this.importedCsv));
-    this.RouteChanger.toTransactions();
+    this.RouteChanger.toMoneyTransactions();
   }
 
   /**
