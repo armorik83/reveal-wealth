@@ -74,25 +74,6 @@ export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppSto
    */
   onClick(): void {
     this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
-    this.Dispatcher.emit(this.IncrementAction.create(1));
   }
 
   /**

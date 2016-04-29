@@ -84,6 +84,13 @@ export class AppDatabase extends Dexie {
       .toArray() as MoneyTransaction[];
   }
 
+  async getCategory(id: number): Promise<Category[]> {
+    return await this.categories
+      .where('id')
+      .equals(id)
+      .toArray() as Category[];
+  }
+
   private defineScheme(): void {
     this.version(1).stores({
       moneyTransactions: MoneyTransaction.schema,

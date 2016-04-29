@@ -16,6 +16,7 @@ import {AppStore, AppState} from './app.store';
 import {RouteChanger} from './route-changer.service';
 import {AppDatabaseProvider} from './app-database-provider.service';
 import {MoneyTransactionRepository} from './domain/application/money-transaction/money-transaction-repository.service';
+import {CategoryRepository} from './domain/application/category/category-repository';
 
 @Component({
   selector  : 'rw-app',
@@ -25,6 +26,7 @@ import {MoneyTransactionRepository} from './domain/application/money-transaction
     AppDispatcher,
     AppStore,
     MoneyTransactionRepository,
+    CategoryRepository,
     RouteChanger,
     AppDatabaseProvider,
     ToMoneyTransactionsAction,

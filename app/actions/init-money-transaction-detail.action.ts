@@ -5,15 +5,16 @@ import {AppState} from '../app.store';
 import {MoneyTransactionRepository} from '../domain/application/money-transaction/money-transaction-repository.service';
 
 @Injectable()
-export class InitMoneyTransactionsAction extends Action<AppState> {
+export class InitMoneyTransactionDetailAction extends Action<AppState> {
 
   constructor(private MoneyTransactionRepository: MoneyTransactionRepository) {
-    super();
+    super()
   }
 
   create(): this {
     this.createReducer(async(curr: AppState, next: AppState) => {
-      next.moneyTransactions = await this.MoneyTransactionRepository.pullAll();
+      const entity          = curr.moneyTransaction;
+      next.moneyTransaction = await this.MoneyTransactionRepository.pull(entity.id);
       return Promise.resolve(next);
     });
     return this;

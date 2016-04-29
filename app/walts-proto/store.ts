@@ -28,7 +28,6 @@ export class Store<ST extends State> {
    */
   onComplete(cdRef: ChangeDetectorRef, listener: Listener<ST>): Function {
     const disposer = this.complete
-      .scan((acc, val) => Object.assign({}, acc, val))
       .debounceTime(1) // This is because it does not call listener() in quick succession.
       .subscribe((curr: ST) => {
         listener(Object.assign({}, curr) as ST); // Argument of the listener() is read-only.
