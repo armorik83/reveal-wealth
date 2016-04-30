@@ -18,7 +18,14 @@ import {ImportFacade} from './import-facade.service';
     ImportDataAction,
     ImportFacade
   ],
+  styles    : [`
+    :host {
+      display: block;
+      height: 100vh;
+    }
+  `],
   template  : `
+    <h1>Import Data</h1>
     <input
       type="file"
       (result)="onResultInputFile($event)"

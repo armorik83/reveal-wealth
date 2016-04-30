@@ -12,7 +12,7 @@ export class BindableMoneyTransaction extends AbstractMoneyTransaction {
     this.type           = item.type;
     this.date           = item.date;
     this.currencyCode   = item.currencyCode;
-    this.amount         = item.amount;
+    this.amount         = Number(item.amount);
     this.currencyCodeTo = item.currencyCodeTo;
     this.amountTo       = item.amountTo;
     this.note           = item.note;

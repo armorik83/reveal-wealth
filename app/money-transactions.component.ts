@@ -1,4 +1,5 @@
 import {Component, ChangeDetectorRef} from 'angular2/core';
+import {CurrencyPipe} from 'angular2/common';
 import {RouterView} from './walts-proto';
 
 import {routeNames} from './app-router-definition';
@@ -17,22 +18,53 @@ import {RouteChanger} from './route-changer.service';
     InitMoneyTransactionsAction,
     IncrementAction
   ],
+  pipes    : [
+    CurrencyPipe
+  ],
+  styles  : [`
+    :host {
+      display: block;
+      height: 100vh;
+    }
+    table {
+      width: 100%;
+    }
+    tr {
+      cursor: pointer;
+      background-color: transparent;
+      transition: background-color .3s;
+    }
+    tr:hover {
+      background-color: #DFE2E7;
+      transition: background-color .1s;
+    }
+    td {
+      padding: 8px;
+      border-bottom: 1px solid #BCC2CD;
+      transition: border-color .3s;
+    }
+    tr:hover td {
+      border-bottom: 1px solid #7B818C;
+      transition: border-color .1s;
+    }
+  `],
   template : `
+    <h1>Transactions</h1>
     <button (click)="onClick()">increment</button>
-    <ul>
-      <li
+    <table>
+      <tr
         *ngFor="#moneyTransaction of moneyTransactions"
         (click)="onClickEntity(moneyTransaction)"
       >
-        <span>{{moneyTransaction.type}}</span>
-        <span>{{moneyTransaction.date}}</span>
-        <span>{{moneyTransaction.account}}</span>
-        <span>{{moneyTransaction.amount}}</span>
-        <span>{{moneyTransaction.category}}</span>
-        <span>{{moneyTransaction.subcategory}}</span>
-        <span>{{moneyTransaction.note}}</span>
-      </li>
-    </ul>
+        <td>{{moneyTransaction.type}}</td>
+        <td>{{moneyTransaction.date}}</td>
+        <td>{{moneyTransaction.account}}</td>
+        <td style="text-align: right">{{moneyTransaction.amount | currency: 'JPY' : false}}</td>
+        <td>{{moneyTransaction.category}}</td>
+        <td>{{moneyTransaction.subcategory}}</td>
+        <td>{{moneyTransaction.note}}</td>
+      </tr>
+    </table>
   `
 })
 export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppStore, AppState> {
