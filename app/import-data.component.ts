@@ -21,7 +21,9 @@ import {ImportFacade} from './import-facade.service';
   styles    : [`
     :host {
       display: block;
-      height: 100vh;
+      height: 100vh;  
+      overflow: scroll;
+      padding: 32px;
     }
   `],
   template  : `

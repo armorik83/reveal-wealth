@@ -18,6 +18,14 @@ const NEW_CATEGORY = `NEW_CATEGORY`;
     ChangeCategoryNameAction,
     InitMoneyTransactionDetailAction
   ],
+  styles   : [`
+    :host {
+      display: block;
+      height: 100vh;  
+      overflow: scroll;
+      padding: 32px;
+    }
+  `],
   template : `
     <div *ngIf="!!moneyTransaction">
       <h1>{{moneyTransaction.date}} {{moneyTransaction.subcategory}}</h1>

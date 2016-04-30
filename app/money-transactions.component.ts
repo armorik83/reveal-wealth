@@ -24,7 +24,9 @@ import {RouteChanger} from './route-changer.service';
   styles  : [`
     :host {
       display: block;
-      height: 100vh;
+      height: 100vh;  
+      overflow: scroll;
+      padding: 32px;
     }
     table {
       width: 100%;
@@ -62,7 +64,7 @@ import {RouteChanger} from './route-changer.service';
         <td style="text-align: right">{{moneyTransaction.amount | currency: 'JPY' : false}}</td>
         <td>{{moneyTransaction.category}}</td>
         <td>{{moneyTransaction.subcategory}}</td>
-        <td>{{moneyTransaction.note}}</td>
+        <td style="width: 40%">{{moneyTransaction.note}}</td>
       </tr>
     </table>
   `

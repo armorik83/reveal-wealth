@@ -41,7 +41,6 @@ import {CategoryRepository} from './domain/application/category/category-reposit
     .contents {
       ${includes.contentsBorderLeft(colors.contentsBackground)};
       width: ${sizes.contentsWidth};
-      padding: 32px;
     }
     .contents.moneyTransactions {
       ${includes.contentsBorderLeft(colors.moneyTransactions)};
