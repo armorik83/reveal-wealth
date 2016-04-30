@@ -20,15 +20,17 @@ const NEW_CATEGORY = `NEW_CATEGORY`;
   ],
   template : `
     <div *ngIf="!!moneyTransaction">
-      <span>{{moneyTransaction.type}}</span>
-      <span>{{moneyTransaction.date}}</span>
-      <span>{{moneyTransaction.account}}</span>
-      <span>{{moneyTransaction.amount}}</span>
-      <span>{{moneyTransaction.category}}</span>
-      <span>{{moneyTransaction.subcategory}}</span>
-      <span>{{moneyTransaction.note}}</span>
+      <h1>{{moneyTransaction.date}} {{moneyTransaction.subcategory}}</h1>
+      <p>Type: {{moneyTransaction.type}}</p>
+      <p>Date: {{moneyTransaction.date}}</p>
+      <p>Account: {{moneyTransaction.account}}</p>
+      <p>To: {{moneyTransaction.payeePayer}}</p>
+      <p>Amount: {{moneyTransaction.amount}}</p>
+      <p>Category: {{moneyTransaction.category}}</p>
       <input #${NEW_CATEGORY} [attr.value]="moneyTransaction.category" type="text">
-      <button (click)="onClick()"></button>
+      <button (click)="onClick()">Change</button>
+      <p>Subcategory: {{moneyTransaction.subcategory}}</p>
+      <p>Note: {{moneyTransaction.note}}</p>
     </div>
   `
 })

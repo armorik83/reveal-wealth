@@ -1,7 +1,8 @@
 import {Component, ChangeDetectorRef} from 'angular2/core';
-import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from 'angular2/router';
+import {ROUTER_DIRECTIVES, RouteConfig} from 'angular2/router';
 import {View} from './walts-proto';
 
+import {colors, sizes, includes} from './style-constants';
 import {routeNames} from './app-router-definition';
 import {MoneyTransactionsComponent} from './money-transactions.component';
 import {MoneyTransactionDetailComponent} from './money-transaction-detail.component';
@@ -22,7 +23,6 @@ import {CategoryRepository} from './domain/application/category/category-reposit
   selector  : 'rw-app',
   directives: [ROUTER_DIRECTIVES, NavComponent],
   providers : [
-    ROUTER_PROVIDERS,
     AppDispatcher,
     AppStore,
     MoneyTransactionRepository,
@@ -33,9 +33,36 @@ import {CategoryRepository} from './domain/application/category/category-reposit
     ToMoneyTransactionDetailAction,
     ToImportDataAction
   ],
+  styles    : [`
+    :host {
+      display: flex;
+      background: ${colors.contentsBackground};
+    }
+    .contents {
+      ${includes.contentsBorderLeft(colors.contentsBackground)};
+      width: ${sizes.contentsWidth};
+      padding: 32px;
+    }
+    .contents.moneyTransactions {
+      ${includes.contentsBorderLeft(colors.moneyTransactions)};
+    }
+    .contents.transactionDetail {
+      ${includes.contentsBorderLeft(colors.moneyTransactionDetail)};
+    }
+    .contents.importData {
+      ${includes.contentsBorderLeft(colors.importData)};
+    }
+  `],
   template  : `
     <rw-nav></rw-nav>
-    <router-outlet></router-outlet> 
+    <div
+      class="contents"
+      [class.moneyTransactions]="isMoneyTransactions"
+      [class.transactionDetail]="isMoneyTransactionDetail"
+      [class.importData]       ="isImport"
+    >
+      <router-outlet></router-outlet> 
+    </div>
   `
 })
 @RouteConfig([
@@ -58,10 +85,20 @@ import {CategoryRepository} from './domain/application/category/category-reposit
 ])
 export class AppComponent extends View<AppDispatcher, AppStore, AppState> {
 
+  isMoneyTransactions: boolean;
+  isMoneyTransactionDetail: boolean;
+  isImport: boolean;
+
   constructor(protected cdRef: ChangeDetectorRef,
               protected Dispatcher: AppDispatcher,
               protected Store: AppStore) {
     super(cdRef, Dispatcher, Store);
+  }
+
+  wtStoreHasChanged(curr: AppState): void {
+    this.isMoneyTransactions      = curr.routeState === routeNames.MoneyTransactionsComponent;
+    this.isMoneyTransactionDetail = curr.routeState === routeNames.MoneyTransactionDetailComponent;
+    this.isImport                 = curr.routeState === routeNames.ImportDataComponent;
   }
 
 }
