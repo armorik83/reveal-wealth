@@ -1,4 +1,4 @@
-import {Directive, Output, EventEmitter, HostListener} from 'angular2/core';
+import {Directive, Output, EventEmitter, HostListener} from '@angular/core';
 
 @Directive({
   selector: 'input[type=file]'

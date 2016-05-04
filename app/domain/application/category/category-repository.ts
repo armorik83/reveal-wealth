@@ -1,4 +1,4 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 
 import {AbstractRepository} from '../abstract/abstract-repository.service';
 import {AppDatabase} from '../../../app-database.ts';
@@ -22,7 +22,7 @@ export class CategoryRepository extends AbstractRepository<number> {
   async pullAll(): Promise<any[]> {
     return Promise.resolve([]);
   }
-  
+
   async update(categoryId: number, newValue: string): Promise<any> {
     const target = (await this.db.getCategory(categoryId))[0];
     return await this.db.categories.put({

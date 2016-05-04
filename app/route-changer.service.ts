@@ -1,4 +1,4 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 
 import {AppDispatcher} from './app.dispatcher';
 import {ToMoneyTransactionsAction} from './actions/to-money-transactions.action';

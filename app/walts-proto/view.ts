@@ -1,4 +1,4 @@
-import {SimpleChange, ChangeDetectorRef} from 'angular2/core';
+import {SimpleChange, ChangeDetectorRef} from '@angular/core';
 import {Dispatcher} from './dispatcher';
 import {Store, State} from './store';
 

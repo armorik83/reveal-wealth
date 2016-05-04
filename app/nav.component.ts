@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {AbstractComponent} from './walts-proto';
 
 import {colors, sizes} from './style-constants';

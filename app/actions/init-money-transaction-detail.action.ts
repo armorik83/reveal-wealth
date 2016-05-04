@@ -1,4 +1,4 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {Action} from '../walts-proto';
 
 import {AppState} from '../app.store';
@@ -8,7 +8,7 @@ import {MoneyTransactionRepository} from '../domain/application/money-transactio
 export class InitMoneyTransactionDetailAction extends Action<AppState> {
 
   constructor(private MoneyTransactionRepository: MoneyTransactionRepository) {
-    super()
+    super();
   }
 
   create(): this {

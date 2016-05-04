@@ -1,4 +1,4 @@
-import {Component, ChangeDetectorRef} from 'angular2/core';
+import {Component, ChangeDetectorRef} from '@angular/core';
 import {RouterView} from './walts-proto';
 
 import {routeNames} from './app-router-definition';

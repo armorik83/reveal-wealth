@@ -1,5 +1,5 @@
-import {Component, ChangeDetectorRef} from 'angular2/core';
-import {ROUTER_DIRECTIVES, RouteConfig} from 'angular2/router';
+import {Component, ChangeDetectorRef} from '@angular/core';
+import {ROUTER_DIRECTIVES, RouteConfig} from '@angular/router-deprecated';
 import {View} from './walts-proto';
 
 import {colors, sizes, includes} from './style-constants';

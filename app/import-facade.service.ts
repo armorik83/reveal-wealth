@@ -1,4 +1,4 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import * as lodash from 'lodash';
 
 import {AppDatabaseProvider} from './app-database-provider.service';

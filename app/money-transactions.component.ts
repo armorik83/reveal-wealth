@@ -1,5 +1,5 @@
-import {Component, ChangeDetectorRef} from 'angular2/core';
-import {CurrencyPipe} from 'angular2/common';
+import {Component, ChangeDetectorRef} from '@angular/core';
+import {CurrencyPipe} from '@angular/common';
 import {RouterView} from './walts-proto';
 
 import {routeNames} from './app-router-definition';
@@ -55,7 +55,7 @@ import {RouteChanger} from './route-changer.service';
     <button (click)="onClick()">increment</button>
     <table>
       <tr
-        *ngFor="#moneyTransaction of moneyTransactions"
+        *ngFor="let moneyTransaction of moneyTransactions"
         (click)="onClickEntity(moneyTransaction)"
       >
         <td>{{moneyTransaction.type}}</td>

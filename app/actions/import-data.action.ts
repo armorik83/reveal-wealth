@@ -1,4 +1,4 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import * as papaparse from 'papaparse';
 import {Action} from '../walts-proto';
 

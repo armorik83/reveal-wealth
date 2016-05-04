@@ -1,4 +1,4 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {State, Store} from './walts-proto';
 
 import {AppDispatcher} from './app.dispatcher';

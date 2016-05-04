@@ -5,8 +5,8 @@ import 'rxjs/Rx';
 import 'zone.js/dist/zone';
 import 'babel-polyfill/dist/polyfill';
 
-import {bootstrap} from 'angular2/platform/browser';
-import {ROUTER_PROVIDERS} from 'angular2/router';
+import {bootstrap} from '@angular/platform-browser-dynamic';
+import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
 
 import {AppComponent} from './app.component';
 

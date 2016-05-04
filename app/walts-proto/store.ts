@@ -1,4 +1,4 @@
-import {ChangeDetectorRef} from 'angular2/core';
+import {ChangeDetectorRef} from '@angular/core';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import 'rxjs/operator/debounceTime';
 
