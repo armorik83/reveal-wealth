@@ -15,8 +15,8 @@ export class Store<ST extends State> {
               private Dispatcher: Dispatcher<ST>) {
     this.state = initState;
     this.Dispatcher.subscribe((reducer) => {
-      reducer(Object.assign({}, this.state)).then((next) => {
-        this.complete.next(next);
+      reducer(Promise.resolve(Object.assign({}, this.state) as ST)).then((state) => {
+        this.complete.next(state);
       });
     });
   }
@@ -27,8 +27,8 @@ export class Store<ST extends State> {
    */
   onComplete(listener: Listener<ST>): Function {
     const disposer = this.complete
-      .subscribe((curr: ST) => {
-        this.state = curr;
+      .subscribe((state: ST) => {
+        this.state = state;
         listener(Object.assign({}, this.state) as ST); // Argument of the listener() is read-only.
       });
     return () => disposer.unsubscribe();

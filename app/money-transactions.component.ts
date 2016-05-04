@@ -89,10 +89,10 @@ export class MoneyTransactionsComponent extends View<AppDispatcher, AppStore, Ap
   ngOnInit(): void {
     super.ngOnInit();
 
-    this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
-      routePaths.MoneyTransactionsComponent
-    ));
-    this.Dispatcher.emit(this.InitMoneyTransactionsAction.create());
+    this.Dispatcher.emitAll([
+      this.SetCurrentRouteStateAction.create(routePaths.MoneyTransactionsComponent),
+      this.InitMoneyTransactionsAction.create()
+    ]);
   }
 
   /**
@@ -108,7 +108,16 @@ export class MoneyTransactionsComponent extends View<AppDispatcher, AppStore, Ap
    * @return void
    */
   onClick(): void {
-    this.Dispatcher.emit(this.IncrementAction.create(1));
+    this.Dispatcher.emitAll([
+      this.IncrementAction.create(1),
+      this.IncrementAction.create(1),
+      this.IncrementAction.create(1),
+      this.IncrementAction.create(1),
+      this.IncrementAction.create(1),
+      this.IncrementAction.create(1),
+      this.IncrementAction.create(1),
+      this.IncrementAction.create(1)
+    ]);
   }
 
   /**

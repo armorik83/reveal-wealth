@@ -11,10 +11,10 @@ export function fn(curr: AppState, n: number): number {
 export class IncrementAction extends Action<AppState> {
 
   create(n: number): this {
-    this.createReducer((curr: AppState) => {
+    this.createReducer((state: AppState) => {
       let next = {} as AppState;
-      next.num = fn(curr, n);
-      return Promise.resolve(this.merge(curr, next));
+      next.num = fn(state, n);
+      return Promise.resolve(this.merge(state, next));
     });
     return this;
   }
