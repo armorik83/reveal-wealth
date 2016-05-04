@@ -1,13 +1,12 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
-import {View} from './walts-proto';
 
 import {routePaths} from './app-router-definition';
 import {IncrementAction} from './actions/increment.action';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {InitMoneyTransactionsAction} from './actions/init-money-transactions.action';
 import {AppDispatcher} from './app.dispatcher';
-import {AppStore, AppState} from './app.store';
+import {AppStore} from './app.store';
 import {BindableMoneyTransaction} from './domain/application/money-transaction/bindable-money-transaction';
 import {RouteChanger} from './route-changer.service';
 
@@ -69,25 +68,25 @@ import {RouteChanger} from './route-changer.service';
     </table>
   `
 })
-export class MoneyTransactionsComponent extends View<AppDispatcher, AppStore, AppState> {
+export class MoneyTransactionsComponent {
 
   private moneyTransactions: BindableMoneyTransaction[] = [];
 
-  constructor(protected AppDispatcher: AppDispatcher,
-              protected AppStore: AppStore,
+  constructor(private AppDispatcher: AppDispatcher,
+              private AppStore: AppStore,
               private ChangeDetectorRef: ChangeDetectorRef,
               private RouteChanger: RouteChanger,
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private InitMoneyTransactionsAction: InitMoneyTransactionsAction,
               private IncrementAction: IncrementAction) {
-    super(AppDispatcher, AppStore);
+    // noop
   }
 
   /**
    * @return void
    */
   ngOnInit(): void {
-    this.Dispatcher.emitAll([
+    this.AppDispatcher.emitAll([
       this.SetCurrentRouteStateAction.create(routePaths.MoneyTransactionsComponent),
       this.InitMoneyTransactionsAction.create()
     ]);
@@ -103,7 +102,7 @@ export class MoneyTransactionsComponent extends View<AppDispatcher, AppStore, Ap
    * @return void
    */
   onClick(): void {
-    this.Dispatcher.emitAll([
+    this.AppDispatcher.emitAll([
       this.IncrementAction.create(1),
       this.IncrementAction.create(1),
       this.IncrementAction.create(1),

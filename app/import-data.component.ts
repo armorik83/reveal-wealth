@@ -1,11 +1,10 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
 
 import {routePaths} from './app-router-definition';
-import {AppView} from './app.view';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {ImportDataAction} from './actions/import-data.action';
 import {AppDispatcher} from './app.dispatcher';
-import {AppStore, AppState} from './app.store';
+import {AppStore} from './app.store';
 import {RouteChanger} from './route-changer.service';
 import {InputFileDirective} from './input-file.directive';
 import {ImportFacade} from './import-facade.service';
@@ -41,19 +40,17 @@ import {ImportFacade} from './import-facade.service';
     </button>
   `
 })
-export class ImportDataComponent extends AppView {
+export class ImportDataComponent {
 
   importedCsv: string;
   disableImport: boolean;
 
-  constructor(protected AppDispatcher: AppDispatcher,
-              protected AppStore: AppStore,
+  constructor(private AppDispatcher: AppDispatcher,
+              private AppStore: AppStore,
               private ChangeDetectorRef: ChangeDetectorRef,
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private RouteChanger: RouteChanger,
               private ImportDataAction: ImportDataAction) {
-    super(AppDispatcher, AppStore);
-
     this.importedCsv   = null;
     this.disableImport = true;
   }
@@ -62,7 +59,7 @@ export class ImportDataComponent extends AppView {
    * @return void
    */
   ngOnInit(): void {
-    this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
+    this.AppDispatcher.emit(this.SetCurrentRouteStateAction.create(
       routePaths.ImportDataComponent
     ));
 
@@ -80,7 +77,7 @@ export class ImportDataComponent extends AppView {
       return;
     }
 
-    this.Dispatcher.emit(this.ImportDataAction.create(this.importedCsv));
+    this.AppDispatcher.emit(this.ImportDataAction.create(this.importedCsv));
     this.RouteChanger.toMoneyTransactions();
   }
 
