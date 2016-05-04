@@ -2,7 +2,7 @@ import {Component, ChangeDetectorRef} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
 import {RouterView} from './walts-proto';
 
-import {routeNames} from './app-router-definition';
+import {routePaths} from './app-router-definition';
 import {IncrementAction} from './actions/increment.action';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {InitMoneyTransactionsAction} from './actions/init-money-transactions.action';
@@ -90,7 +90,7 @@ export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppSto
     super.ngOnInit();
 
     this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
-      routeNames.MoneyTransactionsComponent
+      routePaths.MoneyTransactionsComponent
     ));
     this.Dispatcher.emit(this.InitMoneyTransactionsAction.create());
   }

@@ -1,11 +1,11 @@
 export type RouteState =
-  'MoneyTransactionsComponent' |
-  'MoneyTransactionDetailComponent' |
-  'ImportDataComponent' |
+  '/money-transactions' |
+  '/money-transaction-detail/:id' |
+  '/import' |
   'n/a'
 
-export const routeNames = {
-  MoneyTransactionsComponent     : 'MoneyTransactionsComponent' as 'MoneyTransactionsComponent',
-  MoneyTransactionDetailComponent: 'MoneyTransactionDetailComponent' as 'MoneyTransactionDetailComponent',
-  ImportDataComponent            : 'ImportDataComponent' as 'ImportDataComponent'
+export const routePaths = {
+  MoneyTransactionsComponent     : '/money-transactions' as '/money-transactions',
+  MoneyTransactionDetailComponent: '/money-transaction-detail/:id' as '/money-transaction-detail/:id',
+  ImportDataComponent            : '/import' as '/import'
 };

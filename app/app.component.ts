@@ -1,9 +1,9 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
-import {ROUTER_DIRECTIVES, RouteConfig} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, Routes} from '@angular/router';
 import {View} from './walts-proto';
 
 import {colors, sizes, includes} from './style-constants';
-import {routeNames} from './app-router-definition';
+import {routePaths} from './app-router-definition';
 import {MoneyTransactionsComponent} from './money-transactions.component';
 import {MoneyTransactionDetailComponent} from './money-transaction-detail.component';
 import {ImportDataComponent} from './import-data.component';
@@ -64,23 +64,10 @@ import {CategoryRepository} from './domain/application/category/category-reposit
     </div>
   `
 })
-@RouteConfig([
-  {
-    useAsDefault: true,
-    path        : '/money-transactions',
-    name        : routeNames.MoneyTransactionsComponent,
-    component   : MoneyTransactionsComponent
-  },
-  {
-    path        : '/money-transaction-detail/:id',
-    name        : routeNames.MoneyTransactionDetailComponent,
-    component   : MoneyTransactionDetailComponent
-  },
-  {
-    path        : '/import',
-    name        : routeNames.ImportDataComponent,
-    component   : ImportDataComponent
-  }
+@Routes([
+  {path: routePaths.MoneyTransactionsComponent,      component: MoneyTransactionsComponent},
+  {path: routePaths.MoneyTransactionDetailComponent, component: MoneyTransactionDetailComponent},
+  {path: routePaths.ImportDataComponent,             component: ImportDataComponent}
 ])
 export class AppComponent extends View<AppDispatcher, AppStore, AppState> {
 
@@ -95,9 +82,9 @@ export class AppComponent extends View<AppDispatcher, AppStore, AppState> {
   }
 
   wtStoreHasChanged(curr: AppState): void {
-    this.isMoneyTransactions      = curr.routeState === routeNames.MoneyTransactionsComponent;
-    this.isMoneyTransactionDetail = curr.routeState === routeNames.MoneyTransactionDetailComponent;
-    this.isImport                 = curr.routeState === routeNames.ImportDataComponent;
+    this.isMoneyTransactions      = curr.routeState === routePaths.MoneyTransactionsComponent;
+    this.isMoneyTransactionDetail = curr.routeState === routePaths.MoneyTransactionDetailComponent;
+    this.isImport                 = curr.routeState === routePaths.ImportDataComponent;
   }
 
 }

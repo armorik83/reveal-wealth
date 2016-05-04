@@ -1,7 +1,7 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
 import {RouterView} from './walts-proto';
 
-import {routeNames} from './app-router-definition';
+import {routePaths} from './app-router-definition';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {ImportDataAction} from './actions/import-data.action';
 import {AppDispatcher} from './app.dispatcher';
@@ -65,7 +65,7 @@ export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, App
     super.ngOnInit();
 
     this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
-      routeNames.ImportDataComponent
+      routePaths.ImportDataComponent
     ));
   }
 

@@ -1,7 +1,7 @@
 import {Component, ChangeDetectorRef, ElementRef, ViewChild} from '@angular/core';
 import {RouterView} from './walts-proto';
 
-import {routeNames} from './app-router-definition';
+import {routePaths} from './app-router-definition';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {ChangeCategoryNameAction} from './actions/change-category-name.action';
 import {InitMoneyTransactionDetailAction} from './actions/init-money-transaction-detail.action';
@@ -60,7 +60,7 @@ export class MoneyTransactionDetailComponent extends RouterView<AppDispatcher, A
     super.ngOnInit();
 
     this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
-      routeNames.MoneyTransactionDetailComponent
+      routePaths.MoneyTransactionDetailComponent
     ));
   }
 
