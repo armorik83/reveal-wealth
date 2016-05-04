@@ -73,14 +73,14 @@ export class MoneyTransactionsComponent extends View<AppDispatcher, AppStore, Ap
 
   private moneyTransactions: BindableMoneyTransaction[] = [];
 
-  constructor(protected Dispatcher: AppDispatcher,
-              protected Store: AppStore,
+  constructor(protected AppDispatcher: AppDispatcher,
+              protected AppStore: AppStore,
               private ChangeDetectorRef: ChangeDetectorRef,
               private RouteChanger: RouteChanger,
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private InitMoneyTransactionsAction: InitMoneyTransactionsAction,
               private IncrementAction: IncrementAction) {
-    super(Dispatcher, Store);
+    super(AppDispatcher, AppStore);
   }
 
   /**
@@ -98,9 +98,10 @@ export class MoneyTransactionsComponent extends View<AppDispatcher, AppStore, Ap
   /**
    * @param curr - currentState
    */
-  wtStoreHasChanged(curr: AppState): void {
+  waltsStoreHasChanged(curr: AppState): void {
     console.log(curr);
     this.moneyTransactions = curr.moneyTransactions;
+    this.ChangeDetectorRef.detectChanges();
   }
 
   /**

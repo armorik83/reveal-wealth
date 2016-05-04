@@ -1,63 +1,25 @@
 import {Dispatcher} from './dispatcher';
 import {Store, State} from './store';
 
-export class AbstractComponent {
+export class View<D extends Dispatcher<STT>, STR extends Store<STT>, STT extends State> {
 
-  ngOnInit(): any {
-    // noop
-  }
-
-  ngDoCheck(): any {
-    // noop
-  }
-
-  ngOnDestroy(): any {
-    // noop
-  }
-
-  ngAfterContentInit(): any {
-    // noop
-  }
-
-  ngAfterContentChecked(): any {
-    // noop
-  }
-
-  ngAfterViewInit(): any {
-    // noop
-  }
-
-  ngAfterViewChecked(): any {
-    // noop
-  }
-
-}
-
-export class View<
-  D extends Dispatcher<STT>,
-  STR extends Store<STT>,
-  STT extends State
-> extends AbstractComponent {
-
-  protected disposers: Function[] = [];
+  protected waltsDisposers: Function[] = [];
 
   constructor(protected Dispatcher: D,
               protected Store: STR) {
-    super();
+    // noop
   }
 
   ngOnInit(): any {
-    super.ngOnInit();
-
-    const disposer = this.Store.onComplete(this.wtStoreHasChanged.bind(this));
-    this.disposers.push(disposer);
+    const disposer = this.Store.onComplete(this.waltsStoreHasChanged.bind(this));
+    this.waltsDisposers.push(disposer);
   }
 
   ngOnDestroy(): any {
-    this.disposers.forEach((disposer) => disposer());
+    this.waltsDisposers.forEach((disposer) => disposer());
   }
 
-  wtStoreHasChanged(st: STT): void {
+  waltsStoreHasChanged(st: STT): void {
     // noop
   }
 

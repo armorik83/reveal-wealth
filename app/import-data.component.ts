@@ -1,7 +1,7 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
-import {View} from './walts-proto';
 
 import {routePaths} from './app-router-definition';
+import {AppView} from './app.view';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {ImportDataAction} from './actions/import-data.action';
 import {AppDispatcher} from './app.dispatcher';
@@ -41,18 +41,18 @@ import {ImportFacade} from './import-facade.service';
     </button>
   `
 })
-export class ImportDataComponent extends View<AppDispatcher, AppStore, AppState> {
+export class ImportDataComponent extends AppView {
 
   importedCsv: string;
   disableImport: boolean;
 
-  constructor(protected cdRef: ChangeDetectorRef,
-              protected Dispatcher: AppDispatcher,
-              protected Store: AppStore,
+  constructor(protected AppDispatcher: AppDispatcher,
+              protected AppStore: AppStore,
+              private ChangeDetectorRef: ChangeDetectorRef,
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private RouteChanger: RouteChanger,
               private ImportDataAction: ImportDataAction) {
-    super(Dispatcher, Store);
+    super(AppDispatcher, AppStore);
 
     this.importedCsv   = null;
     this.disableImport = true;
@@ -94,8 +94,9 @@ export class ImportDataComponent extends View<AppDispatcher, AppStore, AppState>
   /**
    * @param curr - currentState
    */
-  wtStoreHasChanged(curr: AppState): void {
+  waltsStoreHasChanged(curr: AppState): void {
     console.log(curr);
+    this.ChangeDetectorRef.detectChanges();
   }
 
 }

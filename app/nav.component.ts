@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {AbstractComponent} from './walts-proto';
 
+import {AbstractComponent} from './abstract.component';
 import {colors, sizes} from './style-constants';
 import {RouteChanger} from './route-changer.service';
 

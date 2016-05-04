@@ -75,13 +75,13 @@ export class AppComponent extends View<AppDispatcher, AppStore, AppState> {
   isMoneyTransactionDetail: boolean;
   isImport: boolean;
 
-  constructor(protected Dispatcher: AppDispatcher,
-              protected Store: AppStore,
+  constructor(protected AppDispatcher: AppDispatcher,
+              protected AppStore: AppStore,
               private ChangeDetectorRef: ChangeDetectorRef) {
-    super(Dispatcher, Store);
+    super(AppDispatcher, AppStore);
   }
 
-  wtStoreHasChanged(curr: AppState): void {
+  waltsStoreHasChanged(curr: AppState): void {
     this.isMoneyTransactions      = curr.routeState === routePaths.MoneyTransactionsComponent;
     this.isMoneyTransactionDetail = curr.routeState === routePaths.MoneyTransactionDetailComponent;
     this.isImport                 = curr.routeState === routePaths.ImportDataComponent;

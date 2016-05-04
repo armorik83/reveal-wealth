@@ -47,13 +47,13 @@ export class MoneyTransactionDetailComponent extends View<AppDispatcher, AppStor
   private moneyTransaction: BindableMoneyTransaction = null;
   @ViewChild(NEW_CATEGORY) private newCategoryInputRef: ElementRef;
 
-  constructor(protected Dispatcher: AppDispatcher,
-              protected Store: AppStore,
+  constructor(protected AppDispatcher: AppDispatcher,
+              protected AppStore: AppStore,
               private ChangeDetectorRef: ChangeDetectorRef,
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private ChangeCategoryNameAction: ChangeCategoryNameAction,
               private InitMoneyTransactionDetailAction: InitMoneyTransactionDetailAction) {
-    super(Dispatcher, Store);
+    super(AppDispatcher, AppStore);
   }
 
   ngOnInit(): void {
@@ -64,9 +64,10 @@ export class MoneyTransactionDetailComponent extends View<AppDispatcher, AppStor
     ));
   }
 
-  wtStoreHasChanged(curr: AppState): void {
+  waltsStoreHasChanged(curr: AppState): void {
     console.log(curr);
     this.moneyTransaction = curr.moneyTransaction;
+    this.ChangeDetectorRef.detectChanges();
   }
 
   onClick(): void {
