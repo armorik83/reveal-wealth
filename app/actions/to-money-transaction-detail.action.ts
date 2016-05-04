@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {Action} from '../walts-proto';
+import {Action, Reducer} from '../walts-proto';
 
 import {routePaths} from '../app-router-definition';
 import {AppState} from '../app.store';
@@ -15,8 +15,8 @@ export class ToMoneyTransactionDetailAction extends Action<AppState> {
     super();
   }
 
-  create(entity: BindableMoneyTransaction): this {
-    this.createReducer(async (curr: AppState) => {
+  create(entity: BindableMoneyTransaction): Reducer<AppState> {
+    return async (curr: AppState) => {
       let next = {} as AppState;
       next.routeState       = routePaths.MoneyTransactionDetailComponent;
       next.moneyTransaction = await this.MoneyTransactionRepository.pull(entity.id);
@@ -24,8 +24,7 @@ export class ToMoneyTransactionDetailAction extends Action<AppState> {
         await this.Router.navigate([next.routeState, {id: entity.id.value}]);
         resolve(this.merge(curr, next));
       });
-    });
-    return this;
+    };
   }
 
 }

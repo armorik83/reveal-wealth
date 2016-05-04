@@ -1,19 +1,18 @@
 import {Subject} from 'rxjs/Subject';
 
-import {Action, Reducer, AsyncReducer} from './action';
+import {Reducer, AsyncReducer} from './action';
 import {State} from './store';
 
 export class Dispatcher<ST extends State> {
 
   private subject = new Subject<AsyncReducer<ST>>();
 
-  emit(action: Action<ST>): void {
-    this.emitAll([action]);
+  emit(reducer: Reducer<ST>): void {
+    this.emitAll([reducer]);
   }
 
-  emitAll(actions: Action<ST>[]): void {
-    const asyncReducer = actions
-      .map((action) => action.reducer)
+  emitAll(reducers: Reducer<ST>[]): void {
+    const asyncReducer = reducers
       .map((f: Reducer<ST>) => (p: Promise<ST>) => p.then(f))
       .reduce((f: AsyncReducer<ST>, g: AsyncReducer<ST>) => (p: Promise<ST>) => g(f(p)))
     ;

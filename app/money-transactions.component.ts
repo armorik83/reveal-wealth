@@ -104,13 +104,13 @@ export class MoneyTransactionsComponent {
   onClick(): void {
     this.AppDispatcher.emitAll([
       this.IncrementAction.create(1),
-      this.IncrementAction.create(1),
-      this.IncrementAction.create(1),
-      this.IncrementAction.create(1),
-      this.IncrementAction.create(1),
-      this.IncrementAction.create(1),
-      this.IncrementAction.create(1),
-      this.IncrementAction.create(1)
+      this.IncrementAction.create(2),
+      this.IncrementAction.create(3),
+      this.IncrementAction.create(4),
+      this.IncrementAction.create(5),
+      this.IncrementAction.create(6),
+      this.IncrementAction.create(7),
+      this.IncrementAction.create(8)
     ]);
   }
 
