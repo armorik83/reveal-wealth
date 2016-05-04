@@ -1,4 +1,3 @@
-import {ChangeDetectorRef} from '@angular/core';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import 'rxjs/operator/debounceTime';
 
@@ -22,16 +21,14 @@ export class Store<ST extends State> {
   }
 
   /**
-   * @param cdRef
    * @param listener
    * @return Function - disposer
    */
-  onComplete(cdRef: ChangeDetectorRef, listener: Listener<ST>): Function {
+  onComplete(listener: Listener<ST>): Function {
     const disposer = this.complete
       .debounceTime(1) // This is because it does not call listener() in quick succession.
       .subscribe((curr: ST) => {
         listener(Object.assign({}, curr) as ST); // Argument of the listener() is read-only.
-        cdRef.detectChanges();
       });
     return () => disposer.unsubscribe();
   }

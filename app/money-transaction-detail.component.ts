@@ -1,5 +1,5 @@
 import {Component, ChangeDetectorRef, ElementRef, ViewChild} from '@angular/core';
-import {RouterView} from './walts-proto';
+import {View} from './walts-proto';
 
 import {routePaths} from './app-router-definition';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
@@ -42,18 +42,18 @@ const NEW_CATEGORY = `NEW_CATEGORY`;
     </div>
   `
 })
-export class MoneyTransactionDetailComponent extends RouterView<AppDispatcher, AppStore, AppState> {
+export class MoneyTransactionDetailComponent extends View<AppDispatcher, AppStore, AppState> {
 
   private moneyTransaction: BindableMoneyTransaction = null;
   @ViewChild(NEW_CATEGORY) private newCategoryInputRef: ElementRef;
 
-  constructor(protected cdRef: ChangeDetectorRef,
-              protected Dispatcher: AppDispatcher,
+  constructor(protected Dispatcher: AppDispatcher,
               protected Store: AppStore,
+              private ChangeDetectorRef: ChangeDetectorRef,
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private ChangeCategoryNameAction: ChangeCategoryNameAction,
               private InitMoneyTransactionDetailAction: InitMoneyTransactionDetailAction) {
-    super(cdRef, Dispatcher, Store);
+    super(Dispatcher, Store);
   }
 
   ngOnInit(): void {

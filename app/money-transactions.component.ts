@@ -1,6 +1,6 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
-import {RouterView} from './walts-proto';
+import {View} from './walts-proto';
 
 import {routePaths} from './app-router-definition';
 import {IncrementAction} from './actions/increment.action';
@@ -69,18 +69,18 @@ import {RouteChanger} from './route-changer.service';
     </table>
   `
 })
-export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppStore, AppState> {
+export class MoneyTransactionsComponent extends View<AppDispatcher, AppStore, AppState> {
 
   private moneyTransactions: BindableMoneyTransaction[] = [];
 
-  constructor(protected cdRef: ChangeDetectorRef,
-              protected Dispatcher: AppDispatcher,
+  constructor(protected Dispatcher: AppDispatcher,
               protected Store: AppStore,
+              private ChangeDetectorRef: ChangeDetectorRef,
               private RouteChanger: RouteChanger,
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private InitMoneyTransactionsAction: InitMoneyTransactionsAction,
               private IncrementAction: IncrementAction) {
-    super(cdRef, Dispatcher, Store);
+    super(Dispatcher, Store);
   }
 
   /**

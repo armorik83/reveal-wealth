@@ -75,10 +75,10 @@ export class AppComponent extends View<AppDispatcher, AppStore, AppState> {
   isMoneyTransactionDetail: boolean;
   isImport: boolean;
 
-  constructor(protected cdRef: ChangeDetectorRef,
-              protected Dispatcher: AppDispatcher,
-              protected Store: AppStore) {
-    super(cdRef, Dispatcher, Store);
+  constructor(protected Dispatcher: AppDispatcher,
+              protected Store: AppStore,
+              private ChangeDetectorRef: ChangeDetectorRef) {
+    super(Dispatcher, Store);
   }
 
   wtStoreHasChanged(curr: AppState): void {

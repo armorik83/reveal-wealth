@@ -1,5 +1,5 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
-import {RouterView} from './walts-proto';
+import {View} from './walts-proto';
 
 import {routePaths} from './app-router-definition';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
@@ -41,7 +41,7 @@ import {ImportFacade} from './import-facade.service';
     </button>
   `
 })
-export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, AppState> {
+export class ImportDataComponent extends View<AppDispatcher, AppStore, AppState> {
 
   importedCsv: string;
   disableImport: boolean;
@@ -52,7 +52,7 @@ export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, App
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private RouteChanger: RouteChanger,
               private ImportDataAction: ImportDataAction) {
-    super(cdRef, Dispatcher, Store);
+    super(Dispatcher, Store);
 
     this.importedCsv   = null;
     this.disableImport = true;
