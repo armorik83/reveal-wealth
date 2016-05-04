@@ -57,17 +57,15 @@ export class MoneyTransactionDetailComponent extends View<AppDispatcher, AppStor
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
-
     this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
       routePaths.MoneyTransactionDetailComponent
     ));
-  }
 
-  waltsStoreHasChanged(curr: AppState): void {
-    console.log(curr);
-    this.moneyTransaction = curr.moneyTransaction;
-    this.ChangeDetectorRef.detectChanges();
+    this.AppStore.observable.subscribe((state) => {
+      console.log(state);
+      this.moneyTransaction = state.moneyTransaction;
+      this.ChangeDetectorRef.detectChanges();
+    });
   }
 
   onClick(): void {

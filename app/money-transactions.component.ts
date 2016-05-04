@@ -87,21 +87,16 @@ export class MoneyTransactionsComponent extends View<AppDispatcher, AppStore, Ap
    * @return void
    */
   ngOnInit(): void {
-    super.ngOnInit();
-
     this.Dispatcher.emitAll([
       this.SetCurrentRouteStateAction.create(routePaths.MoneyTransactionsComponent),
       this.InitMoneyTransactionsAction.create()
     ]);
-  }
 
-  /**
-   * @param curr - currentState
-   */
-  waltsStoreHasChanged(curr: AppState): void {
-    console.log(curr);
-    this.moneyTransactions = curr.moneyTransactions;
-    this.ChangeDetectorRef.detectChanges();
+    this.AppStore.observable.subscribe((state) => {
+      console.log(state);
+      this.moneyTransactions = state.moneyTransactions;
+      this.ChangeDetectorRef.detectChanges();
+    });
   }
 
   /**

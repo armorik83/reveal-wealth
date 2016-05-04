@@ -62,11 +62,14 @@ export class ImportDataComponent extends AppView {
    * @return void
    */
   ngOnInit(): void {
-    super.ngOnInit();
-
     this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
       routePaths.ImportDataComponent
     ));
+
+    this.AppStore.observable.subscribe((state) => {
+      console.log(state);
+      this.ChangeDetectorRef.detectChanges();
+    });
   }
 
   /**
@@ -89,14 +92,6 @@ export class ImportDataComponent extends AppView {
 
     // If it has a no result, button will be disabled.
     this.disableImport = !result;
-  }
-
-  /**
-   * @param curr - currentState
-   */
-  waltsStoreHasChanged(curr: AppState): void {
-    console.log(curr);
-    this.ChangeDetectorRef.detectChanges();
   }
 
 }
