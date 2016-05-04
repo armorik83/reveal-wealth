@@ -1,5 +1,4 @@
-import {ReplaySubject} from 'rxjs/ReplaySubject';
-import 'rxjs/operator/debounceTime';
+import {Subject} from 'rxjs/Subject';
 
 import {Dispatcher} from './dispatcher';
 
@@ -9,12 +8,14 @@ export abstract class State {}
 
 export class Store<ST extends State> {
 
-  private complete = new ReplaySubject<ST>();
+  private complete = new Subject<ST>();
+  private state: ST;
 
-  constructor(protected currentStateRef: ST,
+  constructor(initState: ST,
               private Dispatcher: Dispatcher<ST>) {
+    this.state = initState;
     this.Dispatcher.subscribe((reducer) => {
-      reducer(Object.assign({}, this.currentStateRef), this.currentStateRef).then((next) => {
+      reducer(Object.assign({}, this.state)).then((next) => {
         this.complete.next(next);
       });
     });
@@ -26,9 +27,9 @@ export class Store<ST extends State> {
    */
   onComplete(listener: Listener<ST>): Function {
     const disposer = this.complete
-      .debounceTime(1) // This is because it does not call listener() in quick succession.
       .subscribe((curr: ST) => {
-        listener(Object.assign({}, curr) as ST); // Argument of the listener() is read-only.
+        this.state = curr;
+        listener(Object.assign({}, this.state) as ST); // Argument of the listener() is read-only.
       });
     return () => disposer.unsubscribe();
   }

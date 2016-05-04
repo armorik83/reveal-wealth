@@ -12,9 +12,10 @@ export class InitMoneyTransactionsAction extends Action<AppState> {
   }
 
   create(): this {
-    this.createReducer(async(curr: AppState, next: AppState) => {
+    this.createReducer(async(curr: AppState) => {
+      let next = {} as AppState;
       next.moneyTransactions = await this.MoneyTransactionRepository.pullAll();
-      return Promise.resolve(next);
+      return Promise.resolve(this.merge(curr, next));
     });
     return this;
   }

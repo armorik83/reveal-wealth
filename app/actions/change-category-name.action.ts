@@ -13,9 +13,9 @@ export class ChangeCategoryNameAction extends Action<AppState> {
   }
 
   create(entity: BindableMoneyTransaction, newName: string): this {
-    this.createReducer(async (curr: AppState, next: AppState) => {
+    this.createReducer(async (curr: AppState) => {
       this.CategoryRepository.update(entity.categoryId, newName);
-      return Promise.resolve(next);
+      return Promise.resolve(curr);
     });
     return this;
   }

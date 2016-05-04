@@ -8,9 +8,10 @@ import {AppState} from '../app.store';
 export class SetCurrentRouteStateAction extends Action<AppState> {
 
   create(routeState: RouteState): this {
-    this.createReducer((curr: AppState, next: AppState) => {
+    this.createReducer((curr: AppState) => {
+      let next = {} as AppState;
       next.routeState = routeState;
-      return Promise.resolve(next);
+      return Promise.resolve(this.merge(curr, next));
     });
     return this;
   }
