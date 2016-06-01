@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {State, Store} from './walts-proto';
+import {State, Store} from 'walts';
 
 import {AppDispatcher} from './app.dispatcher';
 import {BindableMoneyTransaction} from './domain/application/money-transaction/bindable-money-transaction';

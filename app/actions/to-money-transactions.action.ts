@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {Action, Reducer} from '../walts-proto';
+import {Action, Reducer} from 'walts';
 
 import {routePaths} from '../app-router-definition';
 import {AppState} from '../app.store';

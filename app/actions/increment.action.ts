@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Action, Reducer} from '../walts-proto';
+import {Action, Reducer} from 'walts';
 
 import {AppState} from '../app.store';
 
