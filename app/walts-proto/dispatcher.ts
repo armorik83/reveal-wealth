@@ -1,7 +1,7 @@
-import {Subject} from 'rxjs/Subject';
+import { Subject } from 'rxjs/Subject';
 
-import {Reducer, AsyncReducer} from './action';
-import {State} from './store';
+import { Reducer, AsyncReducer } from './action';
+import { State } from './store';
 
 export class Dispatcher<ST extends State> {
 

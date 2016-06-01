@@ -1,7 +1,7 @@
-import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
-import {Dispatcher} from './dispatcher';
+import { Dispatcher } from './dispatcher';
 
 export abstract class State {}
 
@@ -11,9 +11,9 @@ export class Store<ST extends State> {
   private state: ST;
 
   constructor(initState: ST,
-              private Dispatcher: Dispatcher<ST>) {
+              private dispatcher: Dispatcher<ST>) {
     this.state = initState;
-    this.Dispatcher.subscribe((reducer) => {
+    this.dispatcher.subscribe((reducer) => {
       const currentState = Promise.resolve(Object.assign({}, this.state) as ST);
       reducer(currentState).then((nextState: ST) => {
         this.state = nextState;
