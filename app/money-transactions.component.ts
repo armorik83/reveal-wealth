@@ -20,7 +20,7 @@ import {RouteChanger} from './route-changer.service';
   pipes    : [
     CurrencyPipe
   ],
-  styles  : [`
+  styles   : [`
     :host {
       display: block;
       height: 100vh;  
