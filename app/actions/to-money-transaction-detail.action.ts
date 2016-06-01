@@ -20,10 +20,9 @@ export class ToMoneyTransactionDetailAction extends Action<AppState> {
       let next = {} as AppState;
       next.routeState       = routePaths.MoneyTransactionDetailComponent;
       next.moneyTransaction = await this.MoneyTransactionRepository.pull(entity.id);
-      return new Promise(async (resolve) => {
-        await this.Router.navigate([next.routeState, {id: entity.id.value}]);
-        resolve(this.merge(curr, next));
-      });
+      await this.Router.navigate([next.routeState, {id: entity.id.value}]);
+
+      return Promise.resolve(this.merge(curr, next));
     };
   }
 
