@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import * as papaparse from 'papaparse';
-import {Action} from '../walts-proto';
+import {Action, Reducer} from '../walts-proto';
 
 import {AppState} from '../app.store';
 import {ImportFacade} from '../import-facade.service';
@@ -31,12 +31,12 @@ export class ImportDataAction extends Action<AppState> {
     super();
   }
 
-  create(csv: string): this {
-    this.createReducer(async (curr: AppState, next: AppState) => {
+  create(csv: string): Reducer<AppState> {
+    return async (state: AppState) => {
+      let next = {} as AppState;
       next.moneyTransactions = await fn(this.ImportFacade, csv);
-      return Promise.resolve(next);
-    });
-    return this;
+      return Promise.resolve(this.merge(state, next));
+    };
   }
 
 }

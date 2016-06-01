@@ -1,11 +1,10 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
-import {RouterView} from './walts-proto';
 
 import {routePaths} from './app-router-definition';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {ImportDataAction} from './actions/import-data.action';
 import {AppDispatcher} from './app.dispatcher';
-import {AppStore, AppState} from './app.store';
+import {AppStore} from './app.store';
 import {RouteChanger} from './route-changer.service';
 import {InputFileDirective} from './input-file.directive';
 import {ImportFacade} from './import-facade.service';
@@ -41,19 +40,17 @@ import {ImportFacade} from './import-facade.service';
     </button>
   `
 })
-export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, AppState> {
+export class ImportDataComponent {
 
   importedCsv: string;
   disableImport: boolean;
 
-  constructor(protected cdRef: ChangeDetectorRef,
-              protected Dispatcher: AppDispatcher,
-              protected Store: AppStore,
+  constructor(private AppDispatcher: AppDispatcher,
+              private AppStore: AppStore,
+              private ChangeDetectorRef: ChangeDetectorRef,
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private RouteChanger: RouteChanger,
               private ImportDataAction: ImportDataAction) {
-    super(cdRef, Dispatcher, Store);
-
     this.importedCsv   = null;
     this.disableImport = true;
   }
@@ -62,11 +59,14 @@ export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, App
    * @return void
    */
   ngOnInit(): void {
-    super.ngOnInit();
-
-    this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
+    this.AppDispatcher.emit(this.SetCurrentRouteStateAction.create(
       routePaths.ImportDataComponent
     ));
+
+    this.AppStore.observable.subscribe((state) => {
+      console.log(state);
+      this.ChangeDetectorRef.detectChanges();
+    });
   }
 
   /**
@@ -77,7 +77,7 @@ export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, App
       return;
     }
 
-    this.Dispatcher.emit(this.ImportDataAction.create(this.importedCsv));
+    this.AppDispatcher.emit(this.ImportDataAction.create(this.importedCsv));
     this.RouteChanger.toMoneyTransactions();
   }
 
@@ -89,13 +89,6 @@ export class ImportDataComponent extends RouterView<AppDispatcher, AppStore, App
 
     // If it has a no result, button will be disabled.
     this.disableImport = !result;
-  }
-
-  /**
-   * @param curr - currentState
-   */
-  wtStoreHasChanged(curr: AppState): void {
-    console.log(curr);
   }
 
 }

@@ -1,39 +1,29 @@
-import {ChangeDetectorRef} from '@angular/core';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
-import 'rxjs/operator/debounceTime';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
-import {Dispatcher} from './dispatcher';
-
-type Listener<ST extends State> = (readOnlyCurrentState: ST) => void;
+import { Dispatcher } from './dispatcher';
 
 export abstract class State {}
 
 export class Store<ST extends State> {
 
-  private complete = new ReplaySubject<ST>();
+  private _observable = new Subject<ST>();
+  private state: ST;
 
-  constructor(protected currentStateRef: ST,
-              private Dispatcher: Dispatcher<ST>) {
-    this.Dispatcher.subscribe((reducer) => {
-      reducer(Object.assign({}, this.currentStateRef), this.currentStateRef).then((next) => {
-        this.complete.next(next);
+  constructor(initState: ST,
+              private dispatcher: Dispatcher<ST>) {
+    this.state = initState;
+    this.dispatcher.subscribe((reducer) => {
+      const currentState = Promise.resolve(Object.assign({}, this.state) as ST);
+      reducer(currentState).then((nextState: ST) => {
+        this.state = nextState;
+        this._observable.next(Object.assign({}, nextState) as ST);
       });
     });
   }
 
-  /**
-   * @param cdRef
-   * @param listener
-   * @return Function - disposer
-   */
-  onComplete(cdRef: ChangeDetectorRef, listener: Listener<ST>): Function {
-    const disposer = this.complete
-      .debounceTime(1) // This is because it does not call listener() in quick succession.
-      .subscribe((curr: ST) => {
-        listener(Object.assign({}, curr) as ST); // Argument of the listener() is read-only.
-        cdRef.detectChanges();
-      });
-    return () => disposer.unsubscribe();
+  get observable(): Observable<ST> {
+    return this._observable;
   }
 
 }

@@ -1,13 +1,12 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
-import {RouterView} from './walts-proto';
 
 import {routePaths} from './app-router-definition';
 import {IncrementAction} from './actions/increment.action';
 import {SetCurrentRouteStateAction} from './actions/set-current-route-state.action';
 import {InitMoneyTransactionsAction} from './actions/init-money-transactions.action';
 import {AppDispatcher} from './app.dispatcher';
-import {AppStore, AppState} from './app.store';
+import {AppStore} from './app.store';
 import {BindableMoneyTransaction} from './domain/application/money-transaction/bindable-money-transaction';
 import {RouteChanger} from './route-changer.service';
 
@@ -21,7 +20,7 @@ import {RouteChanger} from './route-changer.service';
   pipes    : [
     CurrencyPipe
   ],
-  styles  : [`
+  styles   : [`
     :host {
       display: block;
       height: 100vh;  
@@ -69,45 +68,50 @@ import {RouteChanger} from './route-changer.service';
     </table>
   `
 })
-export class MoneyTransactionsComponent extends RouterView<AppDispatcher, AppStore, AppState> {
+export class MoneyTransactionsComponent {
 
   private moneyTransactions: BindableMoneyTransaction[] = [];
 
-  constructor(protected cdRef: ChangeDetectorRef,
-              protected Dispatcher: AppDispatcher,
-              protected Store: AppStore,
+  constructor(private AppDispatcher: AppDispatcher,
+              private AppStore: AppStore,
+              private ChangeDetectorRef: ChangeDetectorRef,
               private RouteChanger: RouteChanger,
               private SetCurrentRouteStateAction: SetCurrentRouteStateAction,
               private InitMoneyTransactionsAction: InitMoneyTransactionsAction,
               private IncrementAction: IncrementAction) {
-    super(cdRef, Dispatcher, Store);
+    // noop
   }
 
   /**
    * @return void
    */
   ngOnInit(): void {
-    super.ngOnInit();
+    this.AppDispatcher.emitAll([
+      this.SetCurrentRouteStateAction.create(routePaths.MoneyTransactionsComponent),
+      this.InitMoneyTransactionsAction.create()
+    ]);
 
-    this.Dispatcher.emit(this.SetCurrentRouteStateAction.create(
-      routePaths.MoneyTransactionsComponent
-    ));
-    this.Dispatcher.emit(this.InitMoneyTransactionsAction.create());
-  }
-
-  /**
-   * @param curr - currentState
-   */
-  wtStoreHasChanged(curr: AppState): void {
-    console.log(curr);
-    this.moneyTransactions = curr.moneyTransactions;
+    this.AppStore.observable.subscribe((state) => {
+      console.log(state);
+      this.moneyTransactions = state.moneyTransactions;
+      this.ChangeDetectorRef.detectChanges();
+    });
   }
 
   /**
    * @return void
    */
   onClick(): void {
-    this.Dispatcher.emit(this.IncrementAction.create(1));
+    this.AppDispatcher.emitAll([
+      this.IncrementAction.create(1),
+      this.IncrementAction.create(2),
+      this.IncrementAction.create(3),
+      this.IncrementAction.create(4),
+      this.IncrementAction.create(5),
+      this.IncrementAction.create(6),
+      this.IncrementAction.create(7),
+      this.IncrementAction.create(8)
+    ]);
   }
 
   /**

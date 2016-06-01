@@ -1,6 +1,5 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
 import {ROUTER_DIRECTIVES, Routes} from '@angular/router';
-import {View} from './walts-proto';
 
 import {colors, sizes, includes} from './style-constants';
 import {routePaths} from './app-router-definition';
@@ -69,19 +68,19 @@ import {CategoryRepository} from './domain/application/category/category-reposit
   {path: routePaths.MoneyTransactionDetailComponent, component: MoneyTransactionDetailComponent},
   {path: routePaths.ImportDataComponent,             component: ImportDataComponent}
 ])
-export class AppComponent extends View<AppDispatcher, AppStore, AppState> {
+export class AppComponent {
 
   isMoneyTransactions: boolean;
   isMoneyTransactionDetail: boolean;
   isImport: boolean;
 
-  constructor(protected cdRef: ChangeDetectorRef,
-              protected Dispatcher: AppDispatcher,
-              protected Store: AppStore) {
-    super(cdRef, Dispatcher, Store);
+  constructor(private AppDispatcher: AppDispatcher,
+              private AppStore: AppStore,
+              private ChangeDetectorRef: ChangeDetectorRef) {
+    // noop
   }
 
-  wtStoreHasChanged(curr: AppState): void {
+  waltsStoreHasChanged(curr: AppState): void {
     this.isMoneyTransactions      = curr.routeState === routePaths.MoneyTransactionsComponent;
     this.isMoneyTransactionDetail = curr.routeState === routePaths.MoneyTransactionDetailComponent;
     this.isImport                 = curr.routeState === routePaths.ImportDataComponent;

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Action} from '../walts-proto';
+import {Action, Reducer} from '../walts-proto';
 
 import {AppState} from '../app.store';
 import {MoneyTransactionRepository} from '../domain/application/money-transaction/money-transaction-repository.service';
@@ -11,13 +11,13 @@ export class InitMoneyTransactionDetailAction extends Action<AppState> {
     super();
   }
 
-  create(): this {
-    this.createReducer(async(curr: AppState, next: AppState) => {
+  create(): Reducer<AppState> {
+    return async(curr: AppState) => {
+      let next              = {} as AppState;
       const entity          = curr.moneyTransaction;
       next.moneyTransaction = await this.MoneyTransactionRepository.pull(entity.id);
-      return Promise.resolve(next);
-    });
-    return this;
+      return Promise.resolve(this.merge(curr, next));
+    };
   }
 
 }
