@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Dispatcher} from './walts-proto';
+import {Dispatcher} from 'walts';
 
 import {AppState} from './app.store';
 
